@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { sendConfirmationEmail } from "@/lib/email"
 
 // GET all reservations (filtered by user or all for admin)
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
 
     if (!session) {
       return NextResponse.json(
@@ -66,7 +65,7 @@ export async function GET(request: Request) {
 // POST create a new reservation with conflict checking
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
 
     if (!session) {
       return NextResponse.json(
