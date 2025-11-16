@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 // DELETE/Cancel a reservation
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -17,8 +17,9 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     const reservation = await prisma.reservation.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!reservation) {
@@ -37,7 +38,7 @@ export async function DELETE(
     }
 
     await prisma.reservation.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { status: "cancelled" }
     })
 
@@ -54,7 +55,7 @@ export async function DELETE(
 // PATCH update a reservation
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -69,8 +70,9 @@ export async function PATCH(
     const body = await request.json()
     const { title, description, startTime, endTime, attendees } = body
 
+    const { id } = await params
     const reservation = await prisma.reservation.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!reservation) {
@@ -104,7 +106,7 @@ export async function PATCH(
         where: {
           roomId: reservation.roomId,
           status: "confirmed",
-          id: { not: params.id },
+          id: { not: id },
           OR: [
             {
               AND: [
@@ -137,7 +139,7 @@ export async function PATCH(
     }
 
     const updated = await prisma.reservation.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...(title && { title }),
         ...(description !== undefined && { description }),

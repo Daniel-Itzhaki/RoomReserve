@@ -5,11 +5,12 @@ import { prisma } from "@/lib/prisma"
 // GET a single room
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const room = await prisma.room.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         reservations: {
           where: {
@@ -45,7 +46,7 @@ export async function GET(
 // PATCH update a room (admin only)
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -60,8 +61,9 @@ export async function PATCH(
     const body = await request.json()
     const { name, description, capacity, location, amenities, imageUrl, isActive } = body
 
+    const { id } = await params
     const room = await prisma.room.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(name && { name }),
         ...(description !== undefined && { description }),
@@ -86,7 +88,7 @@ export async function PATCH(
 // DELETE a room (admin only)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -98,8 +100,9 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     await prisma.room.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })
