@@ -37,7 +37,15 @@ export async function GET(request: Request) {
 
     for (const reservation of reservations) {
       try {
-        await sendReminderEmail(reservation.user.email, {
+        // Use guestEmail for guest bookings, otherwise use user email
+        const email = reservation.guestEmail || reservation.user?.email
+
+        if (!email) {
+          console.error(`No email found for reservation ${reservation.id}`)
+          continue
+        }
+
+        await sendReminderEmail(email, {
           title: reservation.title,
           roomName: reservation.room.name,
           startTime: reservation.startTime,
