@@ -4,6 +4,8 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
+export const dynamic = 'force-dynamic'
+
 interface Room {
   id: string
   name: string
