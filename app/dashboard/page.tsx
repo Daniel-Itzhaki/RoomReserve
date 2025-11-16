@@ -1,8 +1,6 @@
 "use client"
 
-import { useSession, signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
 export const dynamic = 'force-dynamic'
 
@@ -29,11 +27,11 @@ interface Reservation {
 }
 
 export default function Dashboard() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
   const [rooms, setRooms] = useState<Room[]>([])
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [selectedRoom, setSelectedRoom] = useState("")
+  const [guestName, setGuestName] = useState("")
+  const [guestEmail, setGuestEmail] = useState("")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [startTime, setStartTime] = useState("")
@@ -44,17 +42,9 @@ export default function Dashboard() {
   const [success, setSuccess] = useState("")
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/auth/signin")
-    }
-  }, [status, router])
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchRooms()
-      fetchReservations()
-    }
-  }, [status])
+    fetchRooms()
+    fetchReservations()
+  }, [])
 
   const fetchRooms = async () => {
     try {
@@ -90,6 +80,8 @@ export default function Dashboard() {
         },
         body: JSON.stringify({
           roomId: selectedRoom,
+          guestName,
+          guestEmail,
           title,
           description,
           startTime: new Date(startTime).toISOString(),
@@ -105,6 +97,8 @@ export default function Dashboard() {
       }
 
       setSuccess("Reservation created successfully! Confirmation email sent.")
+      setGuestName("")
+      setGuestEmail("")
       setTitle("")
       setDescription("")
       setStartTime("")
@@ -140,18 +134,6 @@ export default function Dashboard() {
     }
   }
 
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
-      </div>
-    )
-  }
-
-  if (!session) {
-    return null
-  }
-
   const upcomingReservations = reservations.filter(
     (r) => r.status === "confirmed" && new Date(r.startTime) > new Date()
   )
@@ -160,25 +142,9 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">RoomReserve Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-700">Welcome, {session.user?.name || session.user?.email}</span>
-            {session.user.role === "admin" && (
-              <button
-                onClick={() => router.push("/admin")}
-                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-              >
-                Admin Panel
-              </button>
-            )}
-            <button
-              onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Sign Out
-            </button>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl font-bold text-gray-900">RoomReserve - Book a Meeting Room</h1>
+          <p className="text-sm text-gray-600 mt-1">Reserve meeting rooms for your team</p>
         </div>
       </header>
 
@@ -201,6 +167,34 @@ export default function Dashboard() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="john@company.com"
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Room
@@ -302,7 +296,7 @@ export default function Dashboard() {
 
           {/* Upcoming Reservations */}
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">Your Upcoming Reservations</h2>
+            <h2 className="text-xl font-bold mb-4">Upcoming Reservations</h2>
 
             {upcomingReservations.length === 0 ? (
               <p className="text-gray-500">No upcoming reservations</p>

@@ -3,33 +3,13 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { sendConfirmationEmail } from "@/lib/email"
 
-// GET all reservations (filtered by user or all for admin)
+// GET all reservations (public access)
 export async function GET(request: Request) {
   try {
-    const session = await auth()
-
-    if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      )
-    }
-
     const { searchParams } = new URL(request.url)
     const roomId = searchParams.get("roomId")
-    const userId = searchParams.get("userId")
 
     const where: any = {}
-
-    // If not admin, only show user's own reservations
-    if (session.user.role !== "admin") {
-      where.userId = session.user.id
-    } else {
-      // Admin can filter by userId
-      if (userId) {
-        where.userId = userId
-      }
-    }
 
     if (roomId) {
       where.roomId = roomId
@@ -39,13 +19,6 @@ export async function GET(request: Request) {
       where,
       include: {
         room: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
       },
       orderBy: {
         startTime: 'desc'
@@ -62,24 +35,24 @@ export async function GET(request: Request) {
   }
 }
 
-// POST create a new reservation with conflict checking
+// POST create a new reservation with conflict checking (public access)
 export async function POST(request: Request) {
   try {
-    const session = await auth()
+    const body = await request.json()
+    const { roomId, title, description, startTime, endTime, attendees, guestName, guestEmail } = body
 
-    if (!session) {
+    if (!roomId || !title || !startTime || !endTime || !guestName || !guestEmail) {
       return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
+        { error: "Missing required fields" },
+        { status: 400 }
       )
     }
 
-    const body = await request.json()
-    const { roomId, title, description, startTime, endTime, attendees } = body
-
-    if (!roomId || !title || !startTime || !endTime) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(guestEmail)) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Invalid email address" },
         { status: 400 }
       )
     }
@@ -141,7 +114,8 @@ export async function POST(request: Request) {
     const reservation = await prisma.reservation.create({
       data: {
         roomId,
-        userId: session.user.id,
+        guestName,
+        guestEmail,
         title,
         description,
         startTime: start,
@@ -150,19 +124,12 @@ export async function POST(request: Request) {
       },
       include: {
         room: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
       }
     })
 
     // Send confirmation email (don't wait for it to complete)
     try {
-      await sendConfirmationEmail(session.user.email, {
+      await sendConfirmationEmail(guestEmail, {
         title: reservation.title,
         roomName: reservation.room.name,
         startTime: reservation.startTime,

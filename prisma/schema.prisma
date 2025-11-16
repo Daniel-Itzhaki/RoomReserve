@@ -80,7 +80,9 @@ model Room {
 model Reservation {
   id                String   @id @default(cuid())
   roomId            String
-  userId            String
+  userId            String?
+  guestName         String
+  guestEmail        String
   title             String
   description       String?
   startTime         DateTime
@@ -92,7 +94,7 @@ model Reservation {
   updatedAt         DateTime @updatedAt
 
   room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([roomId, startTime, endTime])
 }
