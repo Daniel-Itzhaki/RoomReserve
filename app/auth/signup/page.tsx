@@ -31,11 +31,20 @@ export default function SignUp() {
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create account")
+        const text = await response.text()
+        let errorMessage = "Failed to create account"
+        try {
+          const data = JSON.parse(text)
+          errorMessage = data.error || errorMessage
+        } catch (e) {
+          // Response is not JSON
+          errorMessage = text || errorMessage
+        }
+        throw new Error(errorMessage)
       }
+
+      const data = await response.json()
 
       // Auto sign in after registration
       const result = await signIn("credentials", {
