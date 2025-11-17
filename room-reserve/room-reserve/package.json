@@ -27,6 +27,9 @@
     "react-dom": "19.2.0",
     "zod": "^3.24.1"
   },
+  "overrides": {
+    "@auth/core": "0.34.3"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
