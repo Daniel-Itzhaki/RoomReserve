@@ -73,12 +73,12 @@ export default async function Dashboard() {
 
   function formatDateTime(date: Date) {
     const zonedDate = toZonedTime(date, TIMEZONE);
-    return format(zonedDate, 'PPp');
+    return format(zonedDate, 'PPP HH:mm');
   }
 
   function formatTime(date: Date) {
     const zonedDate = toZonedTime(date, TIMEZONE);
-    return format(zonedDate, 'p');
+    return format(zonedDate, 'HH:mm');
   }
 
   return (

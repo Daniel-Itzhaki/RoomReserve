@@ -16,12 +16,12 @@ const TIMEZONE = 'Asia/Jerusalem';
 
 function formatDateTime(date: Date): string {
   const zonedDate = toZonedTime(date, TIMEZONE);
-  return format(zonedDate, 'PPP p');
+  return format(zonedDate, 'PPP HH:mm');
 }
 
 function formatTime(date: Date): string {
   const zonedDate = toZonedTime(date, TIMEZONE);
-  return format(zonedDate, 'p');
+  return format(zonedDate, 'HH:mm');
 }
 
 export async function sendBookingCreatedEmail(

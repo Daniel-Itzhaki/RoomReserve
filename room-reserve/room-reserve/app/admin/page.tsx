@@ -300,17 +300,20 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <img 
-                src="/smartup-logo.png" 
-                alt="SmartUp Academy" 
-                className="h-10 w-auto"
-                onError={(e) => {
-                  // Fallback to icon if logo doesn't exist
-                  e.currentTarget.style.display = 'none';
-                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (fallback) fallback.style.display = 'flex';
-                }}
-              />
+              <Link href="/dashboard" className="cursor-pointer hover:opacity-80 transition-opacity duration-200">
+                <img 
+                  src="/smartup-logo.png" 
+                  alt="SmartUp Academy" 
+                  className="h-10 w-auto"
+                  style={{ backgroundColor: 'transparent' }}
+                  onError={(e) => {
+                    // Fallback to icon if logo doesn't exist
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+              </Link>
               <div className="flex items-center justify-center w-10 h-10 rounded-xl" style={{ display: 'none', background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -656,10 +659,10 @@ export default function AdminPage() {
                         {booking.user.name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {format(new Date(booking.startTime), 'PPp')}
+                        {format(new Date(booking.startTime), 'PPP HH:mm')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {format(new Date(booking.endTime), 'PPp')}
+                        {format(new Date(booking.endTime), 'PPP HH:mm')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button

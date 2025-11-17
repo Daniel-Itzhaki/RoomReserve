@@ -624,7 +624,7 @@ export default function BookingCalendar({
               Week
             </button>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSelectedDate(new Date())}
@@ -1012,7 +1012,7 @@ export default function BookingCalendar({
                     </span>
                   )}
                 </div>
-                
+
                 {/* Guest chips display */}
                 {formData.guestEmails.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-2 p-3 rounded-xl border-2 min-h-[44px]" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
