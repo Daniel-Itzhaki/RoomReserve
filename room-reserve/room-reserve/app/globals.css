@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors - Orange/Warm Tones */
+  --brand-orange-dark: #D24B00;
+  --brand-orange: #FF6900;
+  --brand-orange-medium: #FF9B55;
+  --brand-orange-light: #FFD7B9;
+  
+  /* Brand Colors - Dark Blue/Grey Tones */
+  --brand-blue-dark: #000032;
+  --brand-blue-grey: #141E32;
+  --brand-grey-light: #D2D7E1;
+  --brand-grey-very-light: #E9EDF2;
+  
+  /* Brand Colors - Blue/Cyan Tones */
+  --brand-blue-medium: #004B9B;
+  --brand-cyan: #00BCFA;
+  --brand-cyan-light: #A6E1FF;
+  
+  --foreground-rgb: 20, 30, 50;
+  --background-start-rgb: 233, 237, 242;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: 'Lato', sans-serif;
+}
+
+/* Calendar Styling */
+.rbc-calendar {
+  font-family: inherit;
+}
+
+.rbc-header {
+  padding: 14px 8px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--brand-blue-dark);
+  color: white;
+  border: none !important;
+}
+
+.rbc-header + .rbc-header {
+  border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.rbc-time-view {
+  border: 2px solid var(--brand-grey-light);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.rbc-time-header {
+  border-bottom: 2px solid var(--brand-grey-light);
+  background: var(--brand-grey-very-light);
+}
+
+.rbc-time-content {
+  border-top: none;
+  background: white;
+}
+
+.rbc-time-slot {
+  border-top: 1px solid #f3f4f6 !important;
+}
+
+.rbc-timeslot-group {
+  min-height: 70px;
+  border-left: 2px solid var(--brand-grey-light) !important;
+}
+
+.rbc-day-slot .rbc-time-slot {
+  border-top: 1px solid #f3f4f6;
+}
+
+.rbc-label {
+  font-weight: 600;
+  color: var(--brand-blue-dark);
+  font-size: 0.75rem;
+}
+
+.rbc-current-time-indicator {
+  background: var(--brand-orange);
+  height: 3px;
+  box-shadow: 0 0 10px rgba(255, 105, 0, 0.5);
+}
+
+.rbc-event {
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  border: none !important;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  transition: all 0.2s;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+}
+
+.rbc-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+}
+
+.rbc-event-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.rbc-event-content {
+  font-size: 0.875rem;
+}
+
+.rbc-today {
+  background: var(--brand-grey-very-light);
+}
+
+.rbc-toolbar {
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.rbc-toolbar button {
+  padding: 8px 16px;
+  border: 2px solid var(--brand-grey-light);
+  background: white;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand-blue-dark);
+  transition: all 0.2s;
+}
+
+.rbc-toolbar button:hover {
+  background: var(--brand-blue-dark);
+  color: white;
+  border-color: var(--brand-blue-dark);
+  transform: translateY(-1px);
+  shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.rbc-toolbar button.rbc-active {
+  background: var(--brand-blue-dark);
+  color: white;
+  border-color: var(--brand-blue-dark);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.rbc-addons-dnd .rbc-addons-dnd-resizable {
+  position: relative;
+}
+
+.rbc-addons-dnd-resizable-ns .rbc-addons-dnd-resize-ns-anchor {
+  width: 100%;
+  text-align: center;
+  height: 10px;
+  cursor: ns-resize;
+}
+
+.rbc-addons-dnd-resizable-ns .rbc-addons-dnd-resize-ns-anchor:first-child {
+  top: 0;
+}
+
+.rbc-addons-dnd-resizable-ns .rbc-addons-dnd-resize-ns-anchor:last-child {
+  bottom: 0;
+}
+
+.rbc-addons-dnd-dragging {
+  opacity: 0.7;
+  z-index: 100;
+}
+
+/* Smooth scrollbar */
+.rbc-time-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rbc-time-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb {
+  background: var(--brand-blue-dark);
+  border-radius: 10px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-orange);
+}
