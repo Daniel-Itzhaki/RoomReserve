@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd room-reserve/room-reserve && npm install && npm run build",
+  "outputDirectory": "room-reserve/room-reserve/.next",
+  "installCommand": "cd room-reserve/room-reserve && npm install",
+  "framework": "nextjs"
+}
