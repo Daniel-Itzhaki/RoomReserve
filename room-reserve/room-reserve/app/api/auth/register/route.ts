@@ -14,10 +14,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validatedData = registerSchema.parse(body);
 
-    // Check if user already exists
+    // Normalize email to lowercase for case-insensitive storage
+    const normalizedEmail = validatedData.email.toLowerCase().trim();
+
+    // Check if user already exists (case-insensitive)
     const existingUser = await prisma.user.findUnique({
       where: {
-        email: validatedData.email,
+        email: normalizedEmail,
       },
     });
 
@@ -31,11 +34,11 @@ export async function POST(req: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
-    // Create user (default role is USER)
+    // Create user (default role is USER) - store email in lowercase
     const user = await prisma.user.create({
       data: {
         name: validatedData.name,
-        email: validatedData.email,
+        email: normalizedEmail,
         password: hashedPassword,
         role: 'USER',
       },
