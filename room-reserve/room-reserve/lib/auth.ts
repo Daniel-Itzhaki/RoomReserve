@@ -4,9 +4,14 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import { prisma } from './prisma';
 
+// Ensure NEXTAUTH_SECRET is set
+if (!process.env.NEXTAUTH_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('NEXTAUTH_SECRET is required in production. Please set it in Vercel environment variables.');
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'development-secret-change-in-production',
   session: {
     strategy: 'jwt',
   },
