@@ -95,15 +95,14 @@ body {
 
 .rbc-current-time-indicator {
   background: #FF6900;
+  height: 2px;
+  z-index: 10;
 }
 
 /* Logo styling - remove white background */
 img[src="/smartup-logo.png"] {
   background-color: transparent !important;
   mix-blend-mode: normal;
-}
-  height: 2px;
-  z-index: 10;
 }
 
 .rbc-current-time-indicator::before {
