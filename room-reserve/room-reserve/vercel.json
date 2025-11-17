@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": "room-reserve/room-reserve/.next",
+  "outputDirectory": ".next",
   "installCommand": "npm install",
   "framework": null
 }
