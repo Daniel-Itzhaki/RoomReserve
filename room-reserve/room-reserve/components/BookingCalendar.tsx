@@ -546,16 +546,22 @@ export default function BookingCalendar({
 
       return {
         style: {
-          backgroundColor,
-          borderRadius: '6px',
-          opacity: 0.95,
+          background: isOwner 
+            ? `linear-gradient(135deg, ${roomColor.primary} 0%, ${roomColor.secondary} 100%)`
+            : `linear-gradient(135deg, ${roomColor.secondary} 0%, ${roomColor.primary} 100%)`,
+          borderRadius: '10px',
+          opacity: 0.98,
           color: 'white',
-          border: `2px solid ${isOwner ? roomColor.secondary : roomColor.primary}`,
+          border: 'none',
+          borderLeft: `4px solid ${isOwner ? roomColor.secondary : roomColor.primary}`,
           display: 'block',
           position: 'relative',
-          padding: '2px 4px',
+          padding: '6px 8px',
           fontWeight: isOwner ? '600' : '500',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          boxShadow: isOwner 
+            ? '0 4px 12px rgba(0, 0, 0, 0.15)' 
+            : '0 2px 8px rgba(0, 0, 0, 0.12)',
+          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         },
       };
     },
@@ -602,12 +608,13 @@ export default function BookingCalendar({
           </button>
         </div>
 
-        <div className="flex gap-2 items-center">
-          <label className="font-medium">Room:</label>
+        <div className="flex gap-3 items-center">
+          <label className="font-semibold text-gray-700">Room:</label>
           <select
             value={selectedRoom}
             onChange={(e) => setSelectedRoom(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-2"
+            className="border-2 border-gray-200 rounded-xl px-4 py-2.5 bg-white font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6900] focus:border-transparent transition-all shadow-sm hover:shadow-md"
+            style={{ fontFamily: 'Lato, sans-serif' }}
           >
             <option value="all">All Rooms</option>
             {rooms
@@ -621,33 +628,35 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-lg shadow p-4">
+      <div className="flex-1 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
         <style dangerouslySetInnerHTML={{__html: `
           .rbc-time-content {
-            border-top: 1px solid #e5e7eb;
+            border-top: none !important;
           }
           .rbc-time-header-content {
-            border-left: none;
+            border-left: none !important;
           }
           .rbc-header {
-            border-bottom: 2px solid #D2D7E1;
-            padding: 8px 4px;
-            font-weight: 600;
-            background-color: #E9EDF2;
+            border-bottom: none !important;
+            padding: 16px 12px !important;
+            font-weight: 600 !important;
+            background: transparent !important;
+            color: rgba(255, 255, 255, 0.95) !important;
           }
           .rbc-time-slot {
-            border-top: 1px solid #f3f4f6;
+            border-top: 1px solid rgba(226, 232, 240, 0.4) !important;
           }
           .rbc-day-slot .rbc-time-slot {
-            border-top: 1px solid #f3f4f6;
+            border-top: 1px solid rgba(226, 232, 240, 0.4) !important;
           }
           .rbc-resource-header {
-            border-right: 3px solid #D2D7E1 !important;
-            padding: 12px 8px !important;
-            font-weight: 600;
-            background-color: #E9EDF2;
-            text-align: center;
-            position: relative;
+            border-right: 1px solid rgba(226, 232, 240, 0.6) !important;
+            padding: 16px 12px !important;
+            font-weight: 600 !important;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+            text-align: center !important;
+            position: relative !important;
+            color: #141E32 !important;
           }
           .rbc-resource-header::before {
             content: '';
@@ -657,47 +666,60 @@ export default function BookingCalendar({
             bottom: 0;
             width: 4px;
             background-color: var(--room-color);
+            border-radius: 0 4px 4px 0;
           }
           .rbc-resource-cell {
-            border-right: 3px solid #D2D7E1 !important;
+            border-right: 1px solid rgba(226, 232, 240, 0.4) !important;
             padding: 4px !important;
+            background: #fafbfc !important;
           }
           .rbc-time-content > * + * > * {
-            border-left: 3px solid #D2D7E1 !important;
+            border-left: 1px solid rgba(226, 232, 240, 0.4) !important;
           }
           .rbc-event {
-            margin: 4px 6px !important;
-            border-radius: 6px !important;
+            margin: 8px 6px !important;
+            border-radius: 10px !important;
+            border-left: 4px solid currentColor !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
           }
           .rbc-day-slot .rbc-event {
-            margin-top: 6px !important;
-            margin-bottom: 6px !important;
-            margin-left: 4px !important;
-            margin-right: 4px !important;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+            margin-left: 6px !important;
+            margin-right: 6px !important;
           }
           .rbc-time-slot .rbc-event {
-            margin-top: 6px !important;
-            margin-bottom: 6px !important;
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
           }
           .rbc-event-label {
-            font-size: 0.75rem;
-            opacity: 0.9;
+            font-size: 0.6875rem !important;
+            opacity: 0.85 !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
           }
           .rbc-event-content {
-            font-size: 0.875rem;
-            padding: 2px 4px;
+            font-size: 0.8125rem !important;
+            padding: 2px 4px !important;
+            font-weight: 500 !important;
+            line-height: 1.4 !important;
           }
           .rbc-day-slot {
             position: relative;
+            background: white !important;
           }
           .rbc-day-slot .rbc-events-container {
-            margin-right: 4px;
+            margin-right: 8px !important;
           }
           .rbc-day-slot .rbc-event:not(:last-child) {
-            margin-bottom: 8px !important;
+            margin-bottom: 10px !important;
           }
           .rbc-time-slot .rbc-event:not(:last-child) {
-            margin-bottom: 8px !important;
+            margin-bottom: 10px !important;
+          }
+          .rbc-time-slot {
+            background: white !important;
           }
         `}} />
         <DragAndDropCalendar
@@ -712,14 +734,14 @@ export default function BookingCalendar({
               const bookingEvent = event as BookingEvent;
               const hasGuests = bookingEvent.guestEmails && bookingEvent.guestEmails.length > 0;
               return (
-                <div className="relative w-full h-full flex items-center gap-1 px-1">
-                  <span className="flex-1 truncate text-xs font-medium">{bookingEvent.title}</span>
+                <div className="relative w-full h-full flex items-center gap-2 px-2 py-1">
+                  <span className="flex-1 truncate text-xs font-semibold leading-tight">{bookingEvent.title}</span>
                   {hasGuests && bookingEvent.guestEmails && (
-                    <div className="flex-shrink-0 flex items-center gap-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
+                    <div className="flex-shrink-0 flex items-center gap-1 bg-white/30 rounded-full px-1.5 py-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                       </svg>
-                      <span className="text-xs">{bookingEvent.guestEmails.length}</span>
+                      <span className="text-xs font-bold">{bookingEvent.guestEmails.length}</span>
                     </div>
                   )}
                 </div>
@@ -728,19 +750,31 @@ export default function BookingCalendar({
             resourceHeader: ({ resource }: any) => {
               const roomColor = resource.color || ROOM_COLORS[0];
               return (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', padding: '8px' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '10px', 
+                  justifyContent: 'center', 
+                  padding: '12px 8px',
+                  position: 'relative'
+                }}>
                   <div
                     style={{
-                      width: '14px',
-                      height: '14px',
+                      width: '16px',
+                      height: '16px',
                       borderRadius: '50%',
                       backgroundColor: roomColor.primary,
                       border: `2px solid ${roomColor.secondary}`,
                       flexShrink: 0,
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
                     }}
                   />
-                  <span style={{ fontWeight: 600 }}>{resource.resourceTitle}</span>
+                  <span style={{ 
+                    fontWeight: 600, 
+                    fontSize: '0.875rem',
+                    color: '#141E32',
+                    letterSpacing: '0.01em'
+                  }}>{resource.resourceTitle}</span>
                 </div>
               );
             },
