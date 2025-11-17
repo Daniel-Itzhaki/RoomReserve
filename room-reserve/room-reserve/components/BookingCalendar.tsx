@@ -583,26 +583,26 @@ export default function BookingCalendar({
   return (
     <div className="h-full flex flex-col">
       <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={() => setView('day')}
-            className={`px-4 py-2 rounded ${
+            className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
               view === 'day'
-                ? 'text-white'
-                : 'bg-gray-200'
+                ? 'bg-gradient-to-r from-[#141E32] to-[#000032] text-white shadow-lg shadow-[#141E32]/20'
+                : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-[#141E32] hover:shadow-md'
             }`}
-            style={view === 'day' ? { backgroundColor: '#000032' } : { color: '#141E32' }}
+            style={{ fontFamily: 'Lato, sans-serif' }}
           >
             Day
           </button>
           <button
             onClick={() => setView('week')}
-            className={`px-4 py-2 rounded ${
+            className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
               view === 'week'
-                ? 'text-white'
-                : 'bg-gray-200'
+                ? 'bg-gradient-to-r from-[#141E32] to-[#000032] text-white shadow-lg shadow-[#141E32]/20'
+                : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-[#141E32] hover:shadow-md'
             }`}
-            style={view === 'week' ? { backgroundColor: '#000032' } : { color: '#141E32' }}
+            style={{ fontFamily: 'Lato, sans-serif' }}
           >
             Week
           </button>
