@@ -628,7 +628,7 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+      <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 border border-gray-100/50">
         <style dangerouslySetInnerHTML={{__html: `
           .rbc-time-content {
             border-top: none !important;
@@ -638,25 +638,27 @@ export default function BookingCalendar({
           }
           .rbc-header {
             border-bottom: none !important;
-            padding: 16px 12px !important;
-            font-weight: 600 !important;
-            background: transparent !important;
-            color: rgba(255, 255, 255, 0.95) !important;
+            padding: 20px 16px !important;
+            font-weight: 700 !important;
+            background: white !important;
+            color: #141E32 !important;
+            border-right: 1px solid #f1f5f9 !important;
           }
           .rbc-time-slot {
-            border-top: 1px solid rgba(226, 232, 240, 0.4) !important;
+            border-top: 1px solid #f8fafc !important;
           }
           .rbc-day-slot .rbc-time-slot {
-            border-top: 1px solid rgba(226, 232, 240, 0.4) !important;
+            border-top: 1px solid #f8fafc !important;
           }
           .rbc-resource-header {
-            border-right: 1px solid rgba(226, 232, 240, 0.6) !important;
-            padding: 16px 12px !important;
-            font-weight: 600 !important;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+            border-right: 1px solid #f1f5f9 !important;
+            padding: 20px 16px !important;
+            font-weight: 700 !important;
+            background: white !important;
             text-align: center !important;
             position: relative !important;
             color: #141E32 !important;
+            border-bottom: 2px solid #f1f5f9 !important;
           }
           .rbc-resource-header::before {
             content: '';
@@ -669,28 +671,29 @@ export default function BookingCalendar({
             border-radius: 0 4px 4px 0;
           }
           .rbc-resource-cell {
-            border-right: 1px solid rgba(226, 232, 240, 0.4) !important;
+            border-right: 1px solid #f1f5f9 !important;
             padding: 4px !important;
-            background: #fafbfc !important;
+            background: white !important;
           }
           .rbc-time-content > * + * > * {
-            border-left: 1px solid rgba(226, 232, 240, 0.4) !important;
+            border-left: 1px solid #f1f5f9 !important;
           }
           .rbc-event {
-            margin: 8px 6px !important;
-            border-radius: 10px !important;
-            border-left: 4px solid currentColor !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+            margin: 10px 8px !important;
+            border-radius: 12px !important;
+            border-left: 5px solid currentColor !important;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1) !important;
+            padding: 10px 14px !important;
           }
           .rbc-day-slot .rbc-event {
-            margin-top: 8px !important;
-            margin-bottom: 8px !important;
-            margin-left: 6px !important;
-            margin-right: 6px !important;
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
+            margin-left: 8px !important;
+            margin-right: 8px !important;
           }
           .rbc-time-slot .rbc-event {
-            margin-top: 8px !important;
-            margin-bottom: 8px !important;
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
           }
           .rbc-event-label {
             font-size: 0.6875rem !important;
@@ -713,10 +716,10 @@ export default function BookingCalendar({
             margin-right: 8px !important;
           }
           .rbc-day-slot .rbc-event:not(:last-child) {
-            margin-bottom: 10px !important;
+            margin-bottom: 12px !important;
           }
           .rbc-time-slot .rbc-event:not(:last-child) {
-            margin-bottom: 10px !important;
+            margin-bottom: 12px !important;
           }
           .rbc-time-slot {
             background: white !important;
