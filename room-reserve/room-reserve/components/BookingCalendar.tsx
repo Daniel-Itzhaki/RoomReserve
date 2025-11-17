@@ -577,27 +577,49 @@ export default function BookingCalendar({
 
   return (
     <div className="h-full flex flex-col">
-      {/* Custom Toolbar - Clean and Simple */}
+      {/* Custom Toolbar - Enhanced Design */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex gap-2 bg-gray-100 rounded-xl p-1">
+          <div className="flex gap-2 rounded-xl p-1 shadow-sm" style={{ backgroundColor: '#E9EDF2' }}>
             <button
               onClick={() => setView('day')}
-              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
                 view === 'day'
-                  ? 'bg-white text-[#141E32] shadow-sm'
+                  ? 'text-white shadow-md'
                   : 'text-gray-600 hover:text-[#141E32]'
               }`}
+              style={view === 'day' ? { background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' } : {}}
+              onMouseEnter={(e) => {
+                if (view !== 'day') {
+                  e.currentTarget.style.color = '#004B9B';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (view !== 'day') {
+                  e.currentTarget.style.color = '#6B7280';
+                }
+              }}
             >
               Day
             </button>
             <button
               onClick={() => setView('week')}
-              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
                 view === 'week'
-                  ? 'bg-white text-[#141E32] shadow-sm'
+                  ? 'text-white shadow-md'
                   : 'text-gray-600 hover:text-[#141E32]'
               }`}
+              style={view === 'week' ? { background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' } : {}}
+              onMouseEnter={(e) => {
+                if (view !== 'week') {
+                  e.currentTarget.style.color = '#004B9B';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (view !== 'week') {
+                  e.currentTarget.style.color = '#6B7280';
+                }
+              }}
             >
               Week
             </button>
@@ -606,7 +628,14 @@ export default function BookingCalendar({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSelectedDate(new Date())}
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#D2D7E1';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#E9EDF2';
+              }}
             >
               Today
             </button>
@@ -616,7 +645,16 @@ export default function BookingCalendar({
                 newDate.setDate(newDate.getDate() - 1);
                 setSelectedDate(newDate);
               }}
-              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              style={{ color: '#6B7280' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#004B9B';
+                e.currentTarget.style.backgroundColor = '#E9EDF2';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6B7280';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -628,24 +666,46 @@ export default function BookingCalendar({
                 newDate.setDate(newDate.getDate() + 1);
                 setSelectedDate(newDate);
               }}
-              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              style={{ color: '#6B7280' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#004B9B';
+                e.currentTarget.style.backgroundColor = '#E9EDF2';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6B7280';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
-            <div className="px-4 py-2 text-base font-bold text-[#141E32] min-w-[140px]">
+            <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}>
               {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
             </div>
           </div>
         </div>
 
         <div className="flex gap-3 items-center">
-          <label className="font-semibold text-gray-700 text-sm">Filter:</label>
+          <label className="font-semibold text-sm" style={{ color: '#141E32' }}>Filter:</label>
           <select
             value={selectedRoom}
             onChange={(e) => setSelectedRoom(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 bg-white font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6900] focus:border-transparent transition-all text-sm"
+            className="rounded-lg px-4 py-2 font-semibold text-sm transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0"
+            style={{ 
+              border: '2px solid #D2D7E1', 
+              backgroundColor: 'white',
+              color: '#141E32'
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#004B9B';
+              e.currentTarget.style.boxShadow = '0 0 0 2px rgba(0, 75, 155, 0.2)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = '#D2D7E1';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           >
             <option value="all">All Rooms</option>
             {rooms
@@ -659,7 +719,7 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="flex-1 bg-white rounded-xl shadow-lg border-2 p-4" style={{ borderColor: '#D2D7E1' }}>
         <style dangerouslySetInnerHTML={{__html: `
           .rbc-time-content {
             border-top: none !important;
@@ -831,46 +891,64 @@ export default function BookingCalendar({
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backdropFilter: 'brightness(0.5)' }}>
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-4">
-              {modalType === 'create' ? 'Create Booking' : 'Edit Booking'}
-            </h2>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6" style={{ background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-white">
+                  {modalType === 'create' ? 'Create Booking' : 'Edit Booking'}
+                </h2>
+              </div>
+            </div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block font-medium mb-2">Title</label>
+            <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+              <div className="mb-5">
+                <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Title *</label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   required
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="block font-medium mb-2">Description</label>
+              <div className="mb-5">
+                <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   rows={3}
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="block font-medium mb-2">Room</label>
+              <div className="mb-5">
+                <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Room *</label>
                 <select
                   value={formData.roomId}
                   onChange={(e) =>
                     setFormData({ ...formData, roomId: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   required
                 >
                   {rooms
@@ -883,8 +961,8 @@ export default function BookingCalendar({
                 </select>
               </div>
 
-              <div className="mb-4">
-                <label className="block font-medium mb-2">Start Time</label>
+              <div className="mb-5">
+                <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Start Time *</label>
                 <input
                   type="datetime-local"
                   value={formData.startTime ? utcToLocalDateTime(formData.startTime) : ''}
@@ -896,13 +974,16 @@ export default function BookingCalendar({
                       startTime: localDate.toISOString(),
                     });
                   }}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   required
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="block font-medium mb-2">End Time</label>
+              <div className="mb-5">
+                <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>End Time *</label>
                 <input
                   type="datetime-local"
                   value={formData.endTime ? utcToLocalDateTime(formData.endTime) : ''}
@@ -914,16 +995,19 @@ export default function BookingCalendar({
                       endTime: localDate.toISOString(),
                     });
                   }}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   required
                 />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-5">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block font-medium">Guests</label>
+                  <label className="block font-semibold" style={{ color: '#141E32' }}>Guests</label>
                   {formData.guestEmails.length > 0 && (
-                    <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: '#E9EDF2', color: '#141E32' }}>
+                    <span className="text-xs px-3 py-1 rounded-full font-semibold shadow-sm" style={{ backgroundColor: '#E9EDF2', color: '#141E32' }}>
                       {formData.guestEmails.length} {formData.guestEmails.length === 1 ? 'guest' : 'guests'}
                     </span>
                   )}
@@ -931,7 +1015,7 @@ export default function BookingCalendar({
                 
                 {/* Guest chips display */}
                 {formData.guestEmails.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-2 p-2 bg-gray-50 rounded-lg border border-gray-200 min-h-[44px]">
+                  <div className="flex flex-wrap gap-2 mb-2 p-3 rounded-xl border-2 min-h-[44px]" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
                     {formData.guestEmails.map((email, index) => {
                       const initial = email.charAt(0).toUpperCase();
                       const suggestion = emailSuggestions.find(s => s.email.toLowerCase() === email.toLowerCase());
@@ -999,15 +1083,15 @@ export default function BookingCalendar({
                       onKeyDown={handleGuestInputKeyDown}
                       onPaste={handlePasteGuests}
                       placeholder={formData.guestEmails.length === 0 ? "Add guests" : "Add another guest"}
-                      className={`w-full border rounded px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors ${
-                        guestInputError ? 'border-red-400' : ''
+                      className={`w-full border-2 rounded-xl px-4 py-3 pr-8 focus:outline-none transition-all duration-200 ${
+                        guestInputError ? '' : ''
                       }`}
                       style={{ 
                         borderColor: guestInputError 
                           ? '#EF4444' 
                           : formData.guestEmails.length > 0 
                             ? '#D2D7E1' 
-                            : '#9CA3AF',
+                            : '#D2D7E1',
                       }}
                       onFocus={(e) => {
                         e.target.style.borderColor = '#FF6900';
@@ -1021,9 +1105,7 @@ export default function BookingCalendar({
                         setTimeout(() => {
                           e.target.style.borderColor = guestInputError 
                             ? '#EF4444' 
-                            : formData.guestEmails.length > 0 
-                              ? '#D2D7E1' 
-                              : '#9CA3AF';
+                            : '#D2D7E1';
                           e.target.style.boxShadow = 'none';
                           setShowSuggestions(false);
                           if (formData.guestEmailInput.trim()) {
@@ -1091,24 +1173,25 @@ export default function BookingCalendar({
                 </p>
               </div>
 
-              <div className="mb-4">
-                <label className="flex items-center gap-2 mb-2">
+              <div className="mb-5">
+                <label className="flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors duration-200" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D2D7E1'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#E9EDF2'}>
                   <input
                     type="checkbox"
                     checked={formData.isRecurring}
                     onChange={(e) =>
                       setFormData({ ...formData, isRecurring: e.target.checked })
                     }
-                    className="w-4 h-4"
+                    className="w-5 h-5 border-2 rounded"
+                    style={{ borderColor: '#D2D7E1', accentColor: '#FF6900' }}
                   />
-                  <span className="font-medium">Repeat this meeting</span>
+                  <span className="font-semibold" style={{ color: '#141E32' }}>Repeat this meeting</span>
                 </label>
               </div>
 
               {formData.isRecurring && (
                 <>
-                  <div className="mb-4">
-                    <label className="block font-medium mb-2">Repeat Pattern</label>
+                  <div className="mb-5">
+                    <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Repeat Pattern</label>
                     <select
                       value={formData.recurrencePattern}
                       onChange={(e) =>
@@ -1118,7 +1201,10 @@ export default function BookingCalendar({
                           recurrenceDaysOfWeek: [],
                         })
                       }
-                      className="w-full border border-gray-300 rounded px-3 py-2"
+                      className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                      style={{ borderColor: '#D2D7E1' }}
+                      onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                      onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                     >
                       <option value="DAILY">Daily</option>
                       <option value="WEEKLY">Weekly</option>
@@ -1126,8 +1212,8 @@ export default function BookingCalendar({
                     </select>
                   </div>
 
-                  <div className="mb-4">
-                    <label className="block font-medium mb-2">Repeat Every</label>
+                  <div className="mb-5">
+                    <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Repeat Every</label>
                     <div className="flex items-center gap-2">
                       <input
                         type="number"
@@ -1139,9 +1225,12 @@ export default function BookingCalendar({
                             recurrenceInterval: parseInt(e.target.value) || 1,
                           })
                         }
-                        className="w-20 border border-gray-300 rounded px-3 py-2"
+                        className="w-20 border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                        style={{ borderColor: '#D2D7E1' }}
+                        onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                        onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                       />
-                      <span>
+                      <span style={{ color: '#6B7280' }}>
                         {formData.recurrencePattern === 'DAILY'
                           ? 'day(s)'
                           : formData.recurrencePattern === 'WEEKLY'
@@ -1152,8 +1241,8 @@ export default function BookingCalendar({
                   </div>
 
                   {formData.recurrencePattern === 'WEEKLY' && (
-                    <div className="mb-4">
-                      <label className="block font-medium mb-2">Days of Week</label>
+                    <div className="mb-5">
+                      <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Days of Week</label>
                       <div className="flex flex-wrap gap-2">
                         {[
                           { value: 0, label: 'Sun' },
@@ -1166,7 +1255,18 @@ export default function BookingCalendar({
                         ].map((day) => (
                           <label
                             key={day.value}
-                            className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-50"
+                            className="flex items-center gap-1 px-3 py-2 border-2 rounded-lg cursor-pointer transition-all duration-200"
+                            style={{ borderColor: '#D2D7E1', backgroundColor: formData.recurrenceDaysOfWeek.includes(day.value) ? '#E9EDF2' : 'white' }}
+                            onMouseEnter={(e) => {
+                              if (!formData.recurrenceDaysOfWeek.includes(day.value)) {
+                                e.currentTarget.style.backgroundColor = '#E9EDF2';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!formData.recurrenceDaysOfWeek.includes(day.value)) {
+                                e.currentTarget.style.backgroundColor = 'white';
+                              }
+                            }}
                           >
                             <input
                               type="checkbox"
@@ -1190,16 +1290,17 @@ export default function BookingCalendar({
                                 }
                               }}
                               className="w-4 h-4"
+                              style={{ accentColor: '#FF6900' }}
                             />
-                            <span>{day.label}</span>
+                            <span style={{ color: '#141E32', fontWeight: formData.recurrenceDaysOfWeek.includes(day.value) ? '600' : '500' }}>{day.label}</span>
                           </label>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  <div className="mb-4">
-                    <label className="block font-medium mb-2">Repeat Until (Optional)</label>
+                  <div className="mb-5">
+                    <label className="block font-semibold mb-2" style={{ color: '#141E32' }}>Repeat Until (Optional)</label>
                     <input
                       type="datetime-local"
                       value={formData.recurrenceEndDate}
@@ -1207,21 +1308,27 @@ export default function BookingCalendar({
                         setFormData({ ...formData, recurrenceEndDate: e.target.value })
                       }
                       min={formData.startTime ? new Date(formData.startTime).toISOString().slice(0, 16) : ''}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
+                      className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                      style={{ borderColor: '#D2D7E1' }}
+                      onFocus={(e) => e.currentTarget.style.borderColor = '#FF6900'}
+                      onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs mt-1" style={{ color: '#6B7280' }}>
                       Leave empty to repeat indefinitely (max 1 year)
                     </p>
                   </div>
                 </>
               )}
 
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-3 justify-end pt-4 border-t-2" style={{ borderColor: '#D2D7E1' }}>
                 {modalType === 'edit' && (
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                    className="px-5 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+                    style={{ backgroundColor: '#EF4444' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#DC2626'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#EF4444'}
                   >
                     Delete
                   </button>
@@ -1229,18 +1336,22 @@ export default function BookingCalendar({
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                  className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-white rounded transition-colors"
-                  style={{ backgroundColor: '#000032' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#141E32'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#000032'}
+                  className="px-5 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #D24B00 0%, #B83D00 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)';
+                  }}
                 >
-                  {modalType === 'create' ? 'Create' : 'Update'}
+                  {modalType === 'create' ? 'Create Booking' : 'Update Booking'}
                 </button>
               </div>
             </form>
