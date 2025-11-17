@@ -278,9 +278,9 @@ export default function AdminPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-purple-50 to-indigo-50">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-12 w-12 text-purple-600" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-12 w-12" style={{ color: '#004B9B' }} fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -295,8 +295,8 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50 to-indigo-50">
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-lg border-b-2 border-purple-100">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-lg border-b-2" style={{ borderColor: '#D2D7E1' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
@@ -311,39 +311,57 @@ export default function AdminPage() {
                   if (fallback) fallback.style.display = 'flex';
                 }}
               />
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl" style={{ display: 'none' }}>
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl" style={{ display: 'none', background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold" style={{ background: 'linear-gradient(to right, #004B9B, #00BCFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Admin Panel
               </h1>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
-                <div className="flex items-center justify-center w-9 h-9 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full text-white font-bold text-sm shadow-lg">
+              <div className="flex items-center gap-3 px-4 py-2 rounded-xl border" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
+                <div className="flex items-center justify-center w-9 h-9 rounded-full text-white font-bold text-sm shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                   {session.user.name?.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold text-gray-800">
                     {session.user.name}
                   </span>
-                  <span className="text-xs font-bold text-purple-600">
+                  <span className="text-xs font-bold" style={{ color: '#004B9B' }}>
                     Administrator
                   </span>
                 </div>
               </div>
               <Link
                 href="/dashboard"
-                className="px-4 py-2.5 bg-white border-2 border-purple-200 text-purple-700 rounded-xl font-semibold hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 hover:text-white hover:border-transparent transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                className="px-4 py-2.5 bg-white rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                style={{ border: '2px solid #D2D7E1', color: '#141E32' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.borderColor = 'transparent';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'white';
+                  e.currentTarget.style.color = '#141E32';
+                  e.currentTarget.style.borderColor = '#D2D7E1';
+                }}
               >
                 Dashboard
               </Link>
               <Link
                 href="/calendar"
-                className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="px-4 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                }}
               >
                 Calendar
               </Link>
@@ -457,21 +475,28 @@ export default function AdminPage() {
         </div>
 
         {activeTab === 'rooms' && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-100 overflow-hidden">
-            <div className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-b-2 border-purple-100 flex justify-between items-center">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 overflow-hidden" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6 border-b-2 flex justify-between items-center" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-lg">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <h3 className="text-2xl font-bold" style={{ background: 'linear-gradient(to right, #004B9B, #00BCFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   Meeting Rooms
                 </h3>
               </div>
               <button
                 onClick={handleCreateRoom}
-                className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
+                className="px-5 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
+                style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -481,32 +506,32 @@ export default function AdminPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-purple-100">
-                <thead className="bg-gradient-to-r from-purple-100 to-indigo-100">
+              <table className="min-w-full divide-y" style={{ borderColor: '#D2D7E1' }}>
+                <thead style={{ backgroundColor: '#E9EDF2' }}>
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Name
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Location
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Capacity
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Working Hours
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-purple-50">
+                <tbody className="bg-white divide-y" style={{ borderColor: '#D2D7E1' }}>
                   {rooms.map((room) => (
-                    <tr key={room.id} className="hover:bg-purple-50/50 transition-colors duration-150">
+                    <tr key={room.id} className="transition-colors duration-150" style={{ borderColor: '#D2D7E1' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E9EDF2'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
                           {room.name}
@@ -541,7 +566,14 @@ export default function AdminPage() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleEditRoom(room)}
-                            className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-1"
+                            className="px-3 py-1.5 text-white rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-1"
+                            style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                            }}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -568,45 +600,45 @@ export default function AdminPage() {
         )}
 
         {activeTab === 'bookings' && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-100 overflow-hidden">
-            <div className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-b-2 border-purple-100 flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-lg">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 overflow-hidden" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6 border-b-2 flex items-center gap-3" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <h3 className="text-2xl font-bold" style={{ background: 'linear-gradient(to right, #004B9B, #00BCFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 All Bookings
               </h3>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-purple-100">
-                <thead className="bg-gradient-to-r from-purple-100 to-indigo-100">
+              <table className="min-w-full divide-y" style={{ borderColor: '#D2D7E1' }}>
+                <thead style={{ backgroundColor: '#E9EDF2' }}>
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Title
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Room
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       User
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Start Time
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       End Time
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-purple-50">
+                <tbody className="bg-white divide-y" style={{ borderColor: '#D2D7E1' }}>
                   {bookings.map((booking) => (
-                    <tr key={booking.id} className="hover:bg-purple-50/50 transition-colors duration-150">
+                    <tr key={booking.id} className="transition-colors duration-150" style={{ borderColor: '#D2D7E1' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E9EDF2'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
                           {booking.title}
@@ -649,45 +681,45 @@ export default function AdminPage() {
         )}
 
         {activeTab === 'users' && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-100 overflow-hidden">
-            <div className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-b-2 border-purple-100 flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-lg">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 overflow-hidden" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6 border-b-2 flex items-center gap-3" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <h3 className="text-2xl font-bold" style={{ background: 'linear-gradient(to right, #004B9B, #00BCFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Registered Users
               </h3>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-purple-100">
-                <thead className="bg-gradient-to-r from-purple-100 to-indigo-100">
+              <table className="min-w-full divide-y" style={{ borderColor: '#D2D7E1' }}>
+                <thead style={{ backgroundColor: '#E9EDF2' }}>
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Name
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Email
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Role
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Registered
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: '#141E32' }}>
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-purple-50">
+                <tbody className="bg-white divide-y" style={{ borderColor: '#D2D7E1' }}>
                   {users.map((user) => (
-                    <tr key={user.id} className="hover:bg-purple-50/50 transition-colors duration-150">
+                    <tr key={user.id} className="transition-colors duration-150" style={{ borderColor: '#D2D7E1' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E9EDF2'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full text-white font-bold text-sm shadow-lg">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold text-sm shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
                             {user.name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
                           </div>
                           <span className="font-semibold text-gray-900">{user.name}</span>
@@ -699,9 +731,11 @@ export default function AdminPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                           user.role === 'ADMIN' 
-                            ? 'bg-purple-600 text-white' 
+                            ? 'text-white' 
                             : 'bg-gray-200 text-gray-700'
-                        }`}>
+                        }`}
+                        style={user.role === 'ADMIN' ? { backgroundColor: '#004B9B' } : {}}
+                        >
                           {user.role}
                         </span>
                       </td>
@@ -750,8 +784,8 @@ export default function AdminPage() {
 
       {showRoomModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2 border-purple-100">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
                   <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -773,7 +807,10 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setRoomForm({ ...roomForm, name: e.target.value })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   placeholder="e.g., Meeting Room A"
                   required
                 />
@@ -786,7 +823,10 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setRoomForm({ ...roomForm, description: e.target.value })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   placeholder="Brief description of the room"
                   rows={2}
                 />
@@ -800,7 +840,10 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setRoomForm({ ...roomForm, location: e.target.value })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   placeholder="e.g., 2nd Floor, Building A"
                 />
               </div>
@@ -813,7 +856,10 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setRoomForm({ ...roomForm, capacity: e.target.value })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   placeholder="Number of people"
                   min="1"
                 />
@@ -833,7 +879,10 @@ export default function AdminPage() {
                         workingHoursStart: e.target.value,
                       })
                     }
-                    className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                    className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                     required
                   />
                 </div>
@@ -851,27 +900,31 @@ export default function AdminPage() {
                         workingHoursEnd: e.target.value,
                       })
                     }
-                    className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                    className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                     required
                   />
                 </div>
               </div>
 
               <div className="mb-6">
-                <label className="flex items-center gap-3 p-4 bg-purple-50 rounded-xl border-2 border-purple-200 cursor-pointer hover:bg-purple-100 transition-colors duration-200">
+                <label className="flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors duration-200" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D2D7E1'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#E9EDF2'}>
                   <input
                     type="checkbox"
                     checked={roomForm.isActive}
                     onChange={(e) =>
                       setRoomForm({ ...roomForm, isActive: e.target.checked })
                     }
-                    className="w-5 h-5 text-purple-600 border-2 border-purple-300 rounded focus:ring-2 focus:ring-purple-200"
+                    className="w-5 h-5 border-2 rounded"
+                    style={{ borderColor: '#D2D7E1', accentColor: '#004B9B' }}
                   />
                   <span className="font-semibold text-gray-700">Active</span>
                 </label>
               </div>
 
-              <div className="flex gap-3 justify-end pt-4 border-t-2 border-purple-100">
+              <div className="flex gap-3 justify-end pt-4 border-t-2" style={{ borderColor: '#D2D7E1' }}>
                 <button
                   type="button"
                   onClick={() => setShowRoomModal(false)}
@@ -881,7 +934,14 @@ export default function AdminPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="px-5 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                  }}
                 >
                   {editingRoom ? 'Update Room' : 'Create Room'}
                 </button>
@@ -893,8 +953,8 @@ export default function AdminPage() {
 
       {showUserModal && editingUser && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2 border-purple-100">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2" style={{ borderColor: '#D2D7E1' }}>
+            <div className="p-6" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
                   <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -935,7 +995,10 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setUserForm({ ...userForm, role: e.target.value as 'USER' | 'ADMIN' })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   required
                 >
                   <option value="USER">USER</option>
@@ -951,14 +1014,17 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setUserForm({ ...userForm, newPassword: e.target.value })
                   }
-                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all duration-200"
+                  style={{ borderColor: '#D2D7E1' }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#004B9B'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = '#D2D7E1'}
                   placeholder="Leave empty to keep current password"
                   minLength={6}
                 />
                 <p className="text-xs text-gray-500 mt-1">Minimum 6 characters. Leave empty to keep current password.</p>
               </div>
 
-              <div className="flex gap-3 justify-end pt-4 border-t-2 border-purple-100">
+              <div className="flex gap-3 justify-end pt-4 border-t-2" style={{ borderColor: '#D2D7E1' }}>
                 <button
                   type="button"
                   onClick={() => {
@@ -972,7 +1038,14 @@ export default function AdminPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="px-5 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                  }}
                 >
                   Update User
                 </button>
