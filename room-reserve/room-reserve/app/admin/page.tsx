@@ -17,6 +17,12 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [showRoomModal, setShowRoomModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState<any>(null);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [editingUser, setEditingUser] = useState<any>(null);
+  const [userForm, setUserForm] = useState({
+    role: 'USER' as 'USER' | 'ADMIN',
+    newPassword: '',
+  });
   const [roomForm, setRoomForm] = useState({
     name: '',
     description: '',
@@ -162,6 +168,111 @@ export default function AdminPage() {
       await fetchData();
     } catch (error: any) {
       alert(error.message || 'Failed to delete booking');
+    }
+  };
+
+  const handleEditUser = (user: any) => {
+    setEditingUser(user);
+    setUserForm({
+      role: user.role,
+      newPassword: '',
+    });
+    setShowUserModal(true);
+  };
+
+  const handleResetPassword = async (userId: string) => {
+    const newPassword = prompt('Enter new password (minimum 6 characters):');
+    if (!newPassword || newPassword.length < 6) {
+      alert('Password must be at least 6 characters long');
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to reset the password for this user?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to reset password');
+      }
+
+      alert('Password reset successfully!');
+      await fetchData();
+    } catch (error: any) {
+      alert(error.message || 'Failed to reset password');
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (userId === session?.user?.id) {
+      alert('You cannot delete your own account');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete user');
+      }
+
+      alert('User deleted successfully');
+      await fetchData();
+    } catch (error: any) {
+      alert(error.message || 'Failed to delete user');
+    }
+  };
+
+  const handleSubmitUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!editingUser) return;
+
+    const payload: any = {
+      role: userForm.role,
+    };
+
+    if (userForm.newPassword && userForm.newPassword.length >= 6) {
+      payload.password = userForm.newPassword;
+    }
+
+    try {
+      const response = await fetch(`/api/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update user');
+      }
+
+      await fetchData();
+      setShowUserModal(false);
+      setEditingUser(null);
+      setUserForm({ role: 'USER', newPassword: '' });
+      alert('User updated successfully!');
+    } catch (error: any) {
+      alert(error.message || 'Failed to update user');
     }
   };
 
@@ -533,6 +644,9 @@ export default function AdminPage() {
                     <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
                       Registered
                     </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-purple-50">
@@ -560,6 +674,32 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleEditUser(user)}
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-md hover:shadow-lg"
+                            style={{ backgroundColor: '#004B9B', color: 'white' }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#00BCFA'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#004B9B'}
+                            title="Edit user (change role & reset password)"
+                          >
+                            Edit
+                          </button>
+                          {user.id !== session?.user?.id && (
+                            <button
+                              onClick={() => handleDeleteUser(user.id)}
+                              className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-md hover:shadow-lg"
+                              style={{ backgroundColor: '#EF4444', color: 'white' }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#DC2626'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#EF4444'}
+                              title="Delete user"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -711,6 +851,97 @@ export default function AdminPage() {
                   className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   {editingRoom ? 'Update Room' : 'Create Room'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showUserModal && editingUser && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2 border-purple-100">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-white">
+                  Edit User
+                </h2>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmitUser} className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
+              <div className="mb-5">
+                <label className="block font-semibold text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  value={editingUser.name}
+                  disabled
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-500 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label className="block font-semibold text-gray-700 mb-2">Email</label>
+                <input
+                  type="email"
+                  value={editingUser.email}
+                  disabled
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-500 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label className="block font-semibold text-gray-700 mb-2">Role *</label>
+                <select
+                  value={userForm.role}
+                  onChange={(e) =>
+                    setUserForm({ ...userForm, role: e.target.value as 'USER' | 'ADMIN' })
+                  }
+                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  required
+                >
+                  <option value="USER">USER</option>
+                  <option value="ADMIN">ADMIN</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label className="block font-semibold text-gray-700 mb-2">Reset Password</label>
+                <input
+                  type="password"
+                  value={userForm.newPassword}
+                  onChange={(e) =>
+                    setUserForm({ ...userForm, newPassword: e.target.value })
+                  }
+                  className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                  placeholder="Leave empty to keep current password"
+                  minLength={6}
+                />
+                <p className="text-xs text-gray-500 mt-1">Minimum 6 characters. Leave empty to keep current password.</p>
+              </div>
+
+              <div className="flex gap-3 justify-end pt-4 border-t-2 border-purple-100">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowUserModal(false);
+                    setEditingUser(null);
+                    setUserForm({ role: 'USER', newPassword: '' });
+                  }}
+                  className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-200 shadow-md hover:shadow-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  Update User
                 </button>
               </div>
             </form>
