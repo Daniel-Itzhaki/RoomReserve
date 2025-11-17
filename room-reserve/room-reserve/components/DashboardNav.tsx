@@ -14,7 +14,18 @@ export default function DashboardNav({ userName, userRole }: DashboardNavProps) 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#000032' }}>
+            <img 
+              src="/smartup-logo.png" 
+              alt="SmartUp Academy" 
+              className="h-10 w-auto"
+              onError={(e) => {
+                // Fallback to icon if logo doesn't exist
+                e.currentTarget.style.display = 'none';
+                const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#000032', display: 'none' }}>
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
@@ -40,7 +51,7 @@ export default function DashboardNav({ userName, userRole }: DashboardNavProps) 
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#141E32'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#000032'}
             >
-              ?? Calendar
+              Calendar
             </Link>
             {userRole === 'ADMIN' && (
               <Link
@@ -50,7 +61,7 @@ export default function DashboardNav({ userName, userRole }: DashboardNavProps) 
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D24B00'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF6900'}
               >
-                ?? Admin
+                Admin
               </Link>
             )}
             <LogoutButton />

@@ -73,6 +73,7 @@ interface BookingEvent extends Event {
 interface Room {
   id: string;
   name: string;
+  description?: string;
   workingHoursStart: string;
   workingHoursEnd: string;
   isActive: boolean;
@@ -876,7 +877,7 @@ export default function BookingCalendar({
                     .filter((room) => room.isActive)
                     .map((room) => (
                       <option key={room.id} value={room.id}>
-                        {room.name}
+                        {room.name}{room.description ? ` - ${room.description}` : ''}
                       </option>
                     ))}
                 </select>

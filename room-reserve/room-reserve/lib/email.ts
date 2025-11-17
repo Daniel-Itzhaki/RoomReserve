@@ -69,7 +69,7 @@ export async function sendBookingCreatedEmail(
   try {
     // Send to organizer
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
+      from: 'Info@smartupacademy.org',
       to: userEmail,
       subject,
       html,
@@ -78,7 +78,7 @@ export async function sendBookingCreatedEmail(
     // Send to guests
     if (guestEmails.length > 0) {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
+        from: 'Info@smartupacademy.org',
         to: guestEmails.join(', '),
         subject: `Meeting Invitation: ${booking.title}`,
         html: guestHtml,
@@ -87,8 +87,8 @@ export async function sendBookingCreatedEmail(
 
     if (process.env.ADMIN_NOTIFICATION_EMAIL) {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
+        from: 'Info@smartupacademy.org',
+        to: process.env.ADMIN_NOTIFICATION_EMAIL || 'Info@smartupacademy.org',
         subject: `New Booking: ${booking.title}`,
         html,
       });
@@ -169,7 +169,7 @@ export async function sendBookingUpdatedEmail(
 
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
+      from: 'Info@smartupacademy.org',
       to: userEmail,
       subject,
       html,
@@ -178,7 +178,7 @@ export async function sendBookingUpdatedEmail(
     // Send update notifications to guests
     if (guestEmails && guestEmails.length > 0) {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
+        from: 'Info@smartupacademy.org',
         to: guestEmails.join(', '),
         subject: `Meeting Updated: ${booking.title}`,
         html: guestHtml,
@@ -187,8 +187,8 @@ export async function sendBookingUpdatedEmail(
 
     if (process.env.ADMIN_NOTIFICATION_EMAIL) {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
+        from: 'Info@smartupacademy.org',
+        to: process.env.ADMIN_NOTIFICATION_EMAIL || 'Info@smartupacademy.org',
         subject: `Booking Updated: ${booking.title}`,
         html,
       });
@@ -226,7 +226,7 @@ export async function sendBookingCancelledEmail(
 
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
+      from: 'Info@smartupacademy.org',
       to: userEmail,
       subject,
       html,
@@ -234,8 +234,8 @@ export async function sendBookingCancelledEmail(
 
     if (process.env.ADMIN_NOTIFICATION_EMAIL) {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
+        from: 'Info@smartupacademy.org',
+        to: process.env.ADMIN_NOTIFICATION_EMAIL || 'Info@smartupacademy.org',
         subject: `Booking Cancelled: ${booking.title}`,
         html,
       });

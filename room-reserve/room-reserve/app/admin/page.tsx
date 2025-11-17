@@ -10,7 +10,8 @@ import LogoutButton from '@/components/LogoutButton';
 export default function AdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'rooms' | 'bookings'>('rooms');
+  const [activeTab, setActiveTab] = useState<'rooms' | 'bookings' | 'users'>('rooms');
+  const [users, setUsers] = useState<any[]>([]);
   const [rooms, setRooms] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,16 +43,19 @@ export default function AdminPage() {
 
   const fetchData = async () => {
     try {
-      const [roomsRes, bookingsRes] = await Promise.all([
+      const [roomsRes, bookingsRes, usersRes] = await Promise.all([
         fetch('/api/rooms'),
         fetch('/api/bookings'),
+        fetch('/api/users'),
       ]);
 
       const roomsData = await roomsRes.json();
       const bookingsData = await bookingsRes.json();
+      const usersData = await usersRes.json();
 
       setRooms(roomsData);
       setBookings(bookingsData);
+      setUsers(usersData);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -185,7 +189,18 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl">
+              <img 
+                src="/smartup-logo.png" 
+                alt="SmartUp Academy" 
+                className="h-10 w-auto"
+                onError={(e) => {
+                  // Fallback to icon if logo doesn't exist
+                  e.currentTarget.style.display = 'none';
+                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl" style={{ display: 'none' }}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -241,7 +256,7 @@ export default function AdminPage() {
                 System Administration
               </h2>
               <p className="text-gray-600 mt-1 font-medium">
-                ?? Manage rooms and bookings across the organization
+                Manage rooms and bookings across the organization
               </p>
             </div>
           </div>
@@ -276,6 +291,21 @@ export default function AdminPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Bookings Management
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`py-4 px-6 border-b-4 font-bold text-sm rounded-t-lg transition-all duration-200 ${
+                  activeTab === 'users'
+                    ? 'border-purple-600 text-purple-600 bg-purple-50'
+                    : 'border-transparent text-gray-500 hover:text-purple-600 hover:bg-purple-50/50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  Users Management
                 </div>
               </button>
             </nav>
@@ -470,6 +500,76 @@ export default function AdminPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'users' && (
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-100 overflow-hidden">
+            <div className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-b-2 border-purple-100 flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-lg">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                Registered Users
+              </h3>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-purple-100">
+                <thead className="bg-gradient-to-r from-purple-100 to-indigo-100">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Registered
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-purple-50">
+                  {users.map((user) => (
+                    <tr key={user.id} className="hover:bg-purple-50/50 transition-colors duration-150">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full text-white font-bold text-sm shadow-lg">
+                            {user.name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="font-semibold text-gray-900">{user.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-gray-700">{user.email}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                          user.role === 'ADMIN' 
+                            ? 'bg-purple-600 text-white' 
+                            : 'bg-gray-200 text-gray-700'
+                        }`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {users.length === 0 && (
+                <div className="p-8 text-center text-gray-500">
+                  No users found
+                </div>
+              )}
             </div>
           </div>
         )}

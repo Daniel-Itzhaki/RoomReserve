@@ -12,23 +12,25 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search') || '';
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit') || '10') : undefined;
 
     const users = await prisma.user.findMany({
-      where: {
+      where: search ? {
         OR: [
           { email: { contains: search, mode: 'insensitive' } },
           { name: { contains: search, mode: 'insensitive' } },
         ],
-      },
+      } : {},
       select: {
         id: true,
         name: true,
         email: true,
+        role: true,
+        createdAt: true,
       },
-      take: limit,
+      ...(limit ? { take: limit } : {}),
       orderBy: {
-        email: 'asc',
+        createdAt: 'desc',
       },
     });
 
