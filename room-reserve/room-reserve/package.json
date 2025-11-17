@@ -4,13 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3010",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma db push --accept-data-loss --skip-generate && next build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
     "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "vercel-build": "prisma generate && prisma db push --accept-data-loss --skip-generate && next build"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
