@@ -123,11 +123,11 @@ export default function CalendarPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="cursor-pointer hover:opacity-80 transition-opacity duration-200">
+              <Link href="/dashboard" className="cursor-pointer hover:opacity-80 transition-opacity duration-200 inline-block">
                 <img 
                   src="/smartup-logo.png" 
                   alt="SmartUp Academy" 
-                  className="h-10 w-auto"
+                  className="h-10 w-auto pointer-events-none"
                   style={{ backgroundColor: 'transparent' }}
                   onError={(e) => {
                     // Fallback to icon if logo doesn't exist

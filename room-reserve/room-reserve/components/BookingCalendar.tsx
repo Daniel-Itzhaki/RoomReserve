@@ -681,32 +681,35 @@ export default function BookingCalendar({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
-            <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }} onClick={() => {
-              const input = document.getElementById('date-picker') as HTMLInputElement;
-              if (input) {
-                input.showPicker();
-              }
-            }}>
-              {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
+            <div className="relative">
+              <input
+                id="date-picker"
+                type="date"
+                value={format(selectedDate, 'yyyy-MM-dd')}
+                onChange={(e) => {
+                  if (e.target.value) {
+                    const newDate = new Date(e.target.value + 'T00:00:00');
+                    setSelectedDate(newDate);
+                  }
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                style={{ zIndex: 10 }}
+              />
+              <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md pointer-events-none" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}>
+                {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
+              </div>
             </div>
-            <input
-              id="date-picker"
-              type="date"
-              value={format(selectedDate, 'yyyy-MM-dd')}
-              onChange={(e) => {
-                if (e.target.value) {
-                  const newDate = new Date(e.target.value);
-                  setSelectedDate(newDate);
-                }
-              }}
-              className="absolute opacity-0 pointer-events-none"
-              style={{ position: 'absolute', left: '-9999px' }}
-            />
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 const input = document.getElementById('date-picker') as HTMLInputElement;
                 if (input) {
-                  input.showPicker();
+                  input.focus();
+                  input.click();
+                  // Fallback for browsers that don't support showPicker
+                  if (typeof input.showPicker === 'function') {
+                    input.showPicker();
+                  }
                 }
               }}
               className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
