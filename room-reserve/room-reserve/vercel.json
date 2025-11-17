@@ -1,7 +1,0 @@
-{
-  "buildCommand": "cd room-reserve && npm install && npx prisma generate && npm run build",
-  "outputDirectory": "room-reserve/.next",
-  "installCommand": "cd room-reserve && npm install",
-  "framework": "nextjs",
-  "regions": ["iad1"]
-}
