@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3010",
-    "build": "prisma generate && prisma db push --accept-data-loss --skip-generate && next build",
+    "build": "prisma generate && next build",
+    "postbuild": "prisma db push --accept-data-loss --skip-generate || true",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
