@@ -681,9 +681,50 @@ export default function BookingCalendar({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
-            <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}>
+            <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }} onClick={() => {
+              const input = document.getElementById('date-picker') as HTMLInputElement;
+              if (input) {
+                input.showPicker();
+              }
+            }}>
               {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
             </div>
+            <input
+              id="date-picker"
+              type="date"
+              value={format(selectedDate, 'yyyy-MM-dd')}
+              onChange={(e) => {
+                if (e.target.value) {
+                  const newDate = new Date(e.target.value);
+                  setSelectedDate(newDate);
+                }
+              }}
+              className="absolute opacity-0 pointer-events-none"
+              style={{ position: 'absolute', left: '-9999px' }}
+            />
+            <button
+              onClick={() => {
+                const input = document.getElementById('date-picker') as HTMLInputElement;
+                if (input) {
+                  input.showPicker();
+                }
+              }}
+              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              style={{ color: '#6B7280' }}
+              title="Pick a date"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#004B9B';
+                e.currentTarget.style.backgroundColor = '#E9EDF2';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6B7280';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </button>
           </div>
         </div>
 
