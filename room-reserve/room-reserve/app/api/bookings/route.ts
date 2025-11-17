@@ -120,8 +120,8 @@ function generateRecurringDates(
     }
 
     // Calculate next occurrence BEFORE checking if we should continue
-    let nextStart: Date;
-    let nextEnd: Date;
+    let nextStart: Date | null = null;
+    let nextEnd: Date | null = null;
     
     if (pattern === 'DAILY') {
       nextStart = new Date(currentStart);
@@ -180,9 +180,13 @@ function generateRecurringDates(
       break; // Unknown pattern
     }
 
-    // Update for next iteration
-    currentStart = nextStart;
-    currentEnd = nextEnd;
+    // Update for next iteration (only if we calculated next dates)
+    if (nextStart && nextEnd) {
+      currentStart = nextStart;
+      currentEnd = nextEnd;
+    } else {
+      break; // Can't continue
+    }
     count++;
     
     // If no end date, generate at least a reasonable number of occurrences
