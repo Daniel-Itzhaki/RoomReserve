@@ -5,11 +5,11 @@ import { Calendar, dateFnsLocalizer, SlotInfo, Event } from 'react-big-calendar'
 import withDragAndDrop, {
   withDragAndDropProps,
 } from 'react-big-calendar/lib/addons/dragAndDrop';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import enUS from 'date-fns/locale/en-US';
+import { format } from 'date-fns/format';
+import { parse } from 'date-fns/parse';
+import { startOfWeek } from 'date-fns/startOfWeek';
+import { getDay } from 'date-fns/getDay';
+import { enUS } from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
@@ -536,12 +536,13 @@ export default function BookingCalendar({
   };
 
   const eventStyleGetter = useCallback(
-    (event: BookingEvent) => {
-      const isOwner = event.userId === currentUserId;
-      const roomColor = roomColorMap.get(event.roomId) || ROOM_COLORS[0];
+    (event: any) => {
+      const bookingEvent = event as BookingEvent;
+      const isOwner = bookingEvent.userId === currentUserId;
+      const roomColor = roomColorMap.get(bookingEvent.roomId) || ROOM_COLORS[0];
       // Use primary color for owner, secondary for others
       const backgroundColor = isOwner ? roomColor.primary : roomColor.secondary;
-      const hasGuests = event.guestEmails && event.guestEmails.length > 0;
+      const hasGuests = bookingEvent.guestEmails && bookingEvent.guestEmails.length > 0;
 
       return {
         style: {
@@ -701,11 +702,11 @@ export default function BookingCalendar({
         `}} />
         <DragAndDropCalendar
           localizer={localizer}
-          events={filteredEvents}
-          startAccessor="start"
-          endAccessor="end"
-          resourceIdAccessor="resourceId"
-          resourceTitleAccessor="resourceTitle"
+          events={filteredEvents as any}
+          startAccessor={(event: any) => event.start}
+          endAccessor={(event: any) => event.end}
+          resourceIdAccessor={(event: any) => event.resourceId}
+          resourceTitleAccessor={(resource: any) => resource.resourceTitle}
           components={{
             event: ({ event }: any) => {
               const bookingEvent = event as BookingEvent;
@@ -713,7 +714,7 @@ export default function BookingCalendar({
               return (
                 <div className="relative w-full h-full flex items-center gap-1 px-1">
                   <span className="flex-1 truncate text-xs font-medium">{bookingEvent.title}</span>
-                  {hasGuests && (
+                  {hasGuests && bookingEvent.guestEmails && (
                     <div className="flex-shrink-0 flex items-center gap-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
@@ -750,12 +751,12 @@ export default function BookingCalendar({
           date={selectedDate}
           onNavigate={(date) => setSelectedDate(date)}
           onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectEvent}
-          onEventDrop={handleEventDrop}
-          onEventResize={handleEventResize}
+          onSelectEvent={handleSelectEvent as any}
+          onEventDrop={handleEventDrop as any}
+          onEventResize={handleEventResize as any}
           selectable
           resizable
-          eventPropGetter={eventStyleGetter}
+          eventPropGetter={eventStyleGetter as any}
           step={30}
           timeslots={2}
           min={min}
@@ -933,11 +934,6 @@ export default function BookingCalendar({
                       }}
                       onKeyDown={handleGuestInputKeyDown}
                       onPaste={handlePasteGuests}
-                      onFocus={() => {
-                        if (emailSuggestions.length > 0) {
-                          setShowSuggestions(true);
-                        }
-                      }}
                       placeholder={formData.guestEmails.length === 0 ? "Add guests" : "Add another guest"}
                       className={`w-full border rounded px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors ${
                         guestInputError ? 'border-red-400' : ''
@@ -952,6 +948,9 @@ export default function BookingCalendar({
                       onFocus={(e) => {
                         e.target.style.borderColor = '#FF6900';
                         e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.2)';
+                        if (emailSuggestions.length > 0) {
+                          setShowSuggestions(true);
+                        }
                       }}
                       onBlur={(e) => {
                         // Delay to allow suggestion click
