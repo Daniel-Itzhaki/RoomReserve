@@ -138,7 +138,7 @@ export default function CalendarPage() {
                   {session.user.name?.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-semibold" style={{ color: '#141E32' }}>
+                  <span className="text-sm font-semibold text-gray-800">
                     {session.user.name}
                   </span>
                   {session.user.role === 'ADMIN' && (
@@ -187,7 +187,7 @@ export default function CalendarPage() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 backdrop-blur-sm p-8 rounded-2xl shadow-xl border-2" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: '#D2D7E1' }}>
+        <div className="mb-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border-2" style={{ borderColor: '#D2D7E1' }}>
           <div className="flex items-center gap-4 mb-3">
             <div className="flex items-center justify-center w-14 h-14 rounded-2xl shadow-lg" style={{ background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}>
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,14 +198,14 @@ export default function CalendarPage() {
               <h2 className="text-3xl font-bold" style={{ background: 'linear-gradient(135deg, #FF6900 0%, #000032 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Room Booking Calendar
               </h2>
-              <p className="mt-1 font-medium" style={{ color: '#141E32' }}>
+              <p className="text-gray-600 mt-1 font-medium">
                 📅 Click and drag to create bookings • 🔄 Drag events to reschedule • 🎯 Drag between rooms to move bookings
               </p>
             </div>
           </div>
         </div>
 
-        <div className="backdrop-blur-sm p-6 rounded-2xl shadow-xl border-2" style={{ background: 'rgba(255, 255, 255, 0.9)', borderColor: '#D2D7E1' }}>
+        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-xl border-2" style={{ borderColor: '#D2D7E1' }}>
           <BookingCalendar
             bookings={bookings}
             rooms={rooms}

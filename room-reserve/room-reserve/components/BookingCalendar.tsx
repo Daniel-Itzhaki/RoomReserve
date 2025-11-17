@@ -540,6 +540,22 @@ export default function BookingCalendar({
       const bookingEvent = event as BookingEvent;
       const isOwner = bookingEvent.userId === currentUserId;
       const roomColor = roomColorMap.get(bookingEvent.roomId) || ROOM_COLORS[0];
+      const backgroundColor = isOwner ? roomColor.primary : roomColor.secondary;
+
+      return {
+        style: {
+          backgroundColor,
+          borderRadius: '4px',
+          opacity: isOwner ? 1 : 0.85,
+          color: 'white',
+          border: 'none',
+          borderLeft: `3px solid ${isOwner ? roomColor.secondary : roomColor.primary}`,
+          display: 'block',
+          position: 'relative',
+          padding: '6px 10px',
+          fontWeight: isOwner ? '600' : '500',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.2s',
         },
       };
     },
@@ -560,6 +576,75 @@ export default function BookingCalendar({
 
   return (
     <div className="h-full flex flex-col">
+      {/* Custom Toolbar - Clean and Simple */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2 bg-gray-100 rounded-xl p-1">
+            <button
+              onClick={() => setView('day')}
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+                view === 'day'
+                  ? 'bg-white text-[#141E32] shadow-sm'
+                  : 'text-gray-600 hover:text-[#141E32]'
+              }`}
+            >
+              Day
+            </button>
+            <button
+              onClick={() => setView('week')}
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+                view === 'week'
+                  ? 'bg-white text-[#141E32] shadow-sm'
+                  : 'text-gray-600 hover:text-[#141E32]'
+              }`}
+            >
+              Week
+            </button>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSelectedDate(new Date())}
+              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              Today
+            </button>
+            <button
+              onClick={() => {
+                const newDate = new Date(selectedDate);
+                newDate.setDate(newDate.getDate() - 1);
+                setSelectedDate(newDate);
+              }}
+              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => {
+                const newDate = new Date(selectedDate);
+                newDate.setDate(newDate.getDate() + 1);
+                setSelectedDate(newDate);
+              }}
+              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <div className="px-4 py-2 text-base font-bold text-[#141E32] min-w-[140px]">
+              {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-3 items-center">
+          <label className="font-semibold text-gray-700 text-sm">Filter:</label>
+          <select
+            value={selectedRoom}
+            onChange={(e) => setSelectedRoom(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 bg-white font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6900] focus:border-transparent transition-all text-sm"
           >
             <option value="all">All Rooms</option>
             {rooms
@@ -573,11 +658,37 @@ export default function BookingCalendar({
         </div>
       </div>
 
+      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <style dangerouslySetInnerHTML={{__html: `
+          .rbc-time-content {
+            border-top: none !important;
           }
           .rbc-time-header-content {
             border-left: none !important;
           }
           .rbc-header {
+            padding: 12px 8px !important;
+            font-weight: 600 !important;
+            background: #f9fafb !important;
+            color: #374151 !important;
+            border-right: 1px solid #e5e7eb !important;
+            border-bottom: 1px solid #e5e7eb !important;
+          }
+          .rbc-time-slot {
+            border-top: 1px solid #f3f4f6 !important;
+          }
+          .rbc-day-slot .rbc-time-slot {
+            border-top: 1px solid #f3f4f6 !important;
+          }
+          .rbc-resource-header {
+            border-right: 1px solid #e5e7eb !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            padding: 12px 8px !important;
+            font-weight: 600 !important;
+            background: #f9fafb !important;
+            text-align: center !important;
+            position: relative !important;
+            color: #374151 !important;
           }
           .rbc-resource-header::before {
             content: '';
@@ -585,6 +696,23 @@ export default function BookingCalendar({
             left: 0;
             top: 0;
             bottom: 0;
+            width: 3px;
+            background-color: var(--room-color);
+          }
+          .rbc-resource-cell {
+            border-right: 1px solid #e5e7eb !important;
+            padding: 4px !important;
+            background: white !important;
+          }
+          .rbc-time-content > * + * > * {
+            border-left: 1px solid #e5e7eb !important;
+          }
+          .rbc-event {
+            margin: 4px 6px !important;
+            border-radius: 4px !important;
+            border-left: 3px solid currentColor !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            padding: 6px 10px !important;
           }
           .rbc-day-slot .rbc-event {
             margin-top: 4px !important;
@@ -597,6 +725,22 @@ export default function BookingCalendar({
             margin-bottom: 4px !important;
           }
           .rbc-event-label {
+            font-size: 0.6875rem !important;
+            opacity: 0.9 !important;
+            font-weight: 600 !important;
+          }
+          .rbc-event-content {
+            font-size: 0.8125rem !important;
+            padding: 2px 4px !important;
+            font-weight: 500 !important;
+            line-height: 1.4 !important;
+          }
+          .rbc-day-slot {
+            position: relative;
+            background: white !important;
+          }
+          .rbc-day-slot .rbc-events-container {
+            margin-right: 6px !important;
           }
           .rbc-day-slot .rbc-event:not(:last-child) {
             margin-bottom: 6px !important;
@@ -604,6 +748,8 @@ export default function BookingCalendar({
           .rbc-time-slot .rbc-event:not(:last-child) {
             margin-bottom: 6px !important;
           }
+          .rbc-time-slot {
+            background: white !important;
           }
         `}} />
         <DragAndDropCalendar
@@ -618,8 +764,16 @@ export default function BookingCalendar({
             event: ({ event }: any) => {
               const bookingEvent = event as BookingEvent;
               const hasGuests = bookingEvent.guestEmails && bookingEvent.guestEmails.length > 0;
-              const isOwner = bookingEvent.userId === currentUserId;
               return (
+                <div className="relative w-full h-full flex items-center gap-2 px-2 py-1">
+                  <span className="flex-1 truncate text-xs font-semibold leading-tight">{bookingEvent.title}</span>
+                  {hasGuests && bookingEvent.guestEmails && (
+                    <div className="flex-shrink-0 flex items-center gap-1 bg-white/30 rounded-full px-1.5 py-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                      </svg>
+                      <span className="text-xs font-bold">{bookingEvent.guestEmails.length}</span>
+                    </div>
                   )}
                 </div>
               );
@@ -630,6 +784,26 @@ export default function BookingCalendar({
                 <div style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
+                  gap: '8px', 
+                  justifyContent: 'center', 
+                  padding: '8px 4px',
+                  position: 'relative'
+                }}>
+                  <div
+                    style={{
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      backgroundColor: roomColor.primary,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ 
+                    fontWeight: 600, 
+                    fontSize: '0.8125rem',
+                    color: '#374151',
+                    fontFamily: 'Lato, sans-serif'
+                  }}>{resource.resourceTitle}</span>
                 </div>
               );
             },
@@ -656,177 +830,107 @@ export default function BookingCalendar({
       </div>
 
       {showModal && (
-        <div 
-          className="fixed inset-0 flex items-center justify-center z-50 p-4" 
-          style={{ background: 'rgba(20, 30, 50, 0.3)', backdropFilter: 'blur(8px)' }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setShowModal(false);
-            }
-          }}
-        >
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
-            {/* Header */}
-            <div className="px-6 py-5 border-b" style={{ borderColor: '#E9EDF2', background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}>
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">
-                  {modalType === 'create' ? 'Create Booking' : 'Edit Booking'}
-                </h2>
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/20 transition-colors"
-                  aria-label="Close"
-                >
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4">
+              {modalType === 'create' ? 'Create Booking' : 'Edit Booking'}
+            </h2>
+
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block font-medium mb-2">Title</label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  required
+                />
               </div>
-            </div>
 
-            {/* Form Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block font-medium mb-1.5 text-sm" style={{ color: '#141E32' }}>Title</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    className="w-full border rounded-lg px-3 py-2.5 focus:outline-none transition-all text-sm"
-                    style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#FF6900';
-                      e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#D2D7E1';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                    required
-                  />
+              <div className="mb-4">
+                <label className="block font-medium mb-2">Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  rows={3}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block font-medium mb-2">Room</label>
+                <select
+                  value={formData.roomId}
+                  onChange={(e) =>
+                    setFormData({ ...formData, roomId: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  required
+                >
+                  {rooms
+                    .filter((room) => room.isActive)
+                    .map((room) => (
+                      <option key={room.id} value={room.id}>
+                        {room.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="block font-medium mb-2">Start Time</label>
+                <input
+                  type="datetime-local"
+                  value={formData.startTime ? utcToLocalDateTime(formData.startTime) : ''}
+                  onChange={(e) => {
+                    // datetime-local gives local time, convert to UTC ISO string
+                    const localDate = new Date(e.target.value);
+                    setFormData({
+                      ...formData,
+                      startTime: localDate.toISOString(),
+                    });
+                  }}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block font-medium mb-2">End Time</label>
+                <input
+                  type="datetime-local"
+                  value={formData.endTime ? utcToLocalDateTime(formData.endTime) : ''}
+                  onChange={(e) => {
+                    // datetime-local gives local time, convert to UTC ISO string
+                    const localDate = new Date(e.target.value);
+                    setFormData({
+                      ...formData,
+                      endTime: localDate.toISOString(),
+                    });
+                  }}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block font-medium">Guests</label>
+                  {formData.guestEmails.length > 0 && (
+                    <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: '#E9EDF2', color: '#141E32' }}>
+                      {formData.guestEmails.length} {formData.guestEmails.length === 1 ? 'guest' : 'guests'}
+                    </span>
+                  )}
                 </div>
-
-                <div>
-                  <label className="block font-medium mb-1.5 text-sm" style={{ color: '#141E32' }}>Description</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    className="w-full border rounded-lg px-3 py-2.5 focus:outline-none transition-all resize-none text-sm"
-                    style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                    rows={3}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#FF6900';
-                      e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#D2D7E1';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-medium mb-1.5 text-sm" style={{ color: '#141E32' }}>Room</label>
-                  <select
-                    value={formData.roomId}
-                    onChange={(e) =>
-                      setFormData({ ...formData, roomId: e.target.value })
-                    }
-                    className="w-full border rounded-lg px-3 py-2.5 focus:outline-none transition-all bg-white text-sm"
-                    style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#FF6900';
-                      e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#D2D7E1';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                    required
-                  >
-                    {rooms
-                      .filter((room) => room.isActive)
-                      .map((room) => (
-                        <option key={room.id} value={room.id}>
-                          {room.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block font-medium mb-1.5 text-sm" style={{ color: '#141E32' }}>Start Time</label>
-                    <input
-                      type="datetime-local"
-                      value={formData.startTime ? utcToLocalDateTime(formData.startTime) : ''}
-                      onChange={(e) => {
-                        const localDate = new Date(e.target.value);
-                        setFormData({
-                          ...formData,
-                          startTime: localDate.toISOString(),
-                        });
-                      }}
-                      className="w-full border rounded-lg px-3 py-2.5 focus:outline-none transition-all text-sm"
-                      style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = '#FF6900';
-                        e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = '#D2D7E1';
-                        e.target.style.boxShadow = 'none';
-                      }}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-medium mb-1.5 text-sm" style={{ color: '#141E32' }}>End Time</label>
-                    <input
-                      type="datetime-local"
-                      value={formData.endTime ? utcToLocalDateTime(formData.endTime) : ''}
-                      onChange={(e) => {
-                        const localDate = new Date(e.target.value);
-                        setFormData({
-                          ...formData,
-                          endTime: localDate.toISOString(),
-                        });
-                      }}
-                      className="w-full border rounded-lg px-3 py-2.5 focus:outline-none transition-all text-sm"
-                      style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = '#FF6900';
-                        e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = '#D2D7E1';
-                        e.target.style.boxShadow = 'none';
-                      }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="block font-medium text-sm" style={{ color: '#141E32' }}>Guests</label>
-                    {formData.guestEmails.length > 0 && (
-                      <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: '#E9EDF2', color: '#141E32' }}>
-                        {formData.guestEmails.length} {formData.guestEmails.length === 1 ? 'guest' : 'guests'}
-                      </span>
-                    )}
-                  </div>
                 
                 {/* Guest chips display */}
                 {formData.guestEmails.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-2 p-2 rounded-lg border min-h-[44px]" style={{ backgroundColor: '#E9EDF2', borderColor: '#D2D7E1' }}>
+                  <div className="flex flex-wrap gap-2 mb-2 p-2 bg-gray-50 rounded-lg border border-gray-200 min-h-[44px]">
                     {formData.guestEmails.map((email, index) => {
                       const initial = email.charAt(0).toUpperCase();
                       const suggestion = emailSuggestions.find(s => s.email.toLowerCase() === email.toLowerCase());
@@ -894,7 +998,7 @@ export default function BookingCalendar({
                       onKeyDown={handleGuestInputKeyDown}
                       onPaste={handlePasteGuests}
                       placeholder={formData.guestEmails.length === 0 ? "Add guests" : "Add another guest"}
-                      className={`w-full border rounded-lg px-3 py-2 pr-8 focus:outline-none transition-colors text-sm ${
+                      className={`w-full border rounded px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors ${
                         guestInputError ? 'border-red-400' : ''
                       }`}
                       style={{ 
@@ -906,7 +1010,7 @@ export default function BookingCalendar({
                       }}
                       onFocus={(e) => {
                         e.target.style.borderColor = '#FF6900';
-                        e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.15)';
+                        e.target.style.boxShadow = '0 0 0 2px rgba(255, 105, 0, 0.2)';
                         if (emailSuggestions.length > 0) {
                           setShowSuggestions(true);
                         }
@@ -981,214 +1085,164 @@ export default function BookingCalendar({
                     </p>
                   )}
                 </div>
-                  <p className="text-xs mt-2" style={{ color: '#6B7280' }}>
-                    Press Enter or comma to add • Paste multiple emails • Backspace to remove last guest • Arrow keys to navigate suggestions
-                  </p>
-                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Press Enter or comma to add ? Paste multiple emails ? Backspace to remove last guest ? ?? to navigate suggestions
+                </p>
+              </div>
 
-                <div>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.isRecurring}
+              <div className="mb-4">
+                <label className="flex items-center gap-2 mb-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.isRecurring}
+                    onChange={(e) =>
+                      setFormData({ ...formData, isRecurring: e.target.checked })
+                    }
+                    className="w-4 h-4"
+                  />
+                  <span className="font-medium">Repeat this meeting</span>
+                </label>
+              </div>
+
+              {formData.isRecurring && (
+                <>
+                  <div className="mb-4">
+                    <label className="block font-medium mb-2">Repeat Pattern</label>
+                    <select
+                      value={formData.recurrencePattern}
                       onChange={(e) =>
-                        setFormData({ ...formData, isRecurring: e.target.checked })
+                        setFormData({
+                          ...formData,
+                          recurrencePattern: e.target.value as 'DAILY' | 'WEEKLY' | 'MONTHLY',
+                          recurrenceDaysOfWeek: [],
+                        })
                       }
-                      className="w-4 h-4 rounded"
-                      style={{ accentColor: '#FF6900' }}
-                    />
-                    <span className="font-medium text-sm" style={{ color: '#141E32' }}>Repeat this meeting</span>
-                  </label>
-                </div>
+                      className="w-full border border-gray-300 rounded px-3 py-2"
+                    >
+                      <option value="DAILY">Daily</option>
+                      <option value="WEEKLY">Weekly</option>
+                      <option value="MONTHLY">Monthly</option>
+                    </select>
+                  </div>
 
-                {formData.isRecurring && (
-                  <>
-                    <div>
-                      <label className="block font-semibold mb-2 text-sm" style={{ color: '#141E32' }}>Repeat Pattern</label>
-                      <select
-                        value={formData.recurrencePattern}
+                  <div className="mb-4">
+                    <label className="block font-medium mb-2">Repeat Every</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min="1"
+                        value={formData.recurrenceInterval}
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            recurrencePattern: e.target.value as 'DAILY' | 'WEEKLY' | 'MONTHLY',
-                            recurrenceDaysOfWeek: [],
+                            recurrenceInterval: parseInt(e.target.value) || 1,
                           })
                         }
-                        className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all bg-white"
-                        style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = '#FF6900';
-                          e.target.style.boxShadow = '0 0 0 3px rgba(255, 105, 0, 0.1)';
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = '#D2D7E1';
-                          e.target.style.boxShadow = 'none';
-                        }}
-                      >
-                        <option value="DAILY">Daily</option>
-                        <option value="WEEKLY">Weekly</option>
-                        <option value="MONTHLY">Monthly</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block font-semibold mb-2 text-sm" style={{ color: '#141E32' }}>Repeat Every</label>
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="number"
-                          min="1"
-                          value={formData.recurrenceInterval}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              recurrenceInterval: parseInt(e.target.value) || 1,
-                            })
-                          }
-                          className="w-24 border-2 rounded-xl px-4 py-3 focus:outline-none transition-all"
-                          style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                          onFocus={(e) => {
-                            e.target.style.borderColor = '#FF6900';
-                            e.target.style.boxShadow = '0 0 0 3px rgba(255, 105, 0, 0.1)';
-                          }}
-                          onBlur={(e) => {
-                            e.target.style.borderColor = '#D2D7E1';
-                            e.target.style.boxShadow = 'none';
-                          }}
-                        />
-                        <span className="font-medium" style={{ color: '#141E32' }}>
-                          {formData.recurrencePattern === 'DAILY'
-                            ? 'day(s)'
-                            : formData.recurrencePattern === 'WEEKLY'
-                            ? 'week(s)'
-                            : 'month(s)'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {formData.recurrencePattern === 'WEEKLY' && (
-                      <div>
-                        <label className="block font-semibold mb-2 text-sm" style={{ color: '#141E32' }}>Days of Week</label>
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            { value: 0, label: 'Sun' },
-                            { value: 1, label: 'Mon' },
-                            { value: 2, label: 'Tue' },
-                            { value: 3, label: 'Wed' },
-                            { value: 4, label: 'Thu' },
-                            { value: 5, label: 'Fri' },
-                            { value: 6, label: 'Sat' },
-                          ].map((day) => (
-                            <label
-                              key={day.value}
-                              className="flex items-center gap-2 px-4 py-2 border-2 rounded-xl cursor-pointer transition-all"
-                              style={{ 
-                                borderColor: formData.recurrenceDaysOfWeek.includes(day.value) ? '#FF6900' : '#D2D7E1',
-                                backgroundColor: formData.recurrenceDaysOfWeek.includes(day.value) ? '#FFD7B9' : 'transparent',
-                                color: '#141E32'
-                              }}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={formData.recurrenceDaysOfWeek.includes(day.value)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setFormData({
-                                      ...formData,
-                                      recurrenceDaysOfWeek: [
-                                        ...formData.recurrenceDaysOfWeek,
-                                        day.value,
-                                      ],
-                                    });
-                                  } else {
-                                    setFormData({
-                                      ...formData,
-                                      recurrenceDaysOfWeek: formData.recurrenceDaysOfWeek.filter(
-                                        (d) => d !== day.value
-                                      ),
-                                    });
-                                  }
-                                }}
-                                className="w-4 h-4"
-                                style={{ accentColor: '#FF6900' }}
-                              />
-                              <span className="font-medium">{day.label}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    <div>
-                      <label className="block font-semibold mb-2 text-sm" style={{ color: '#141E32' }}>Repeat Until (Optional)</label>
-                      <input
-                        type="datetime-local"
-                        value={formData.recurrenceEndDate}
-                        onChange={(e) =>
-                          setFormData({ ...formData, recurrenceEndDate: e.target.value })
-                        }
-                        min={formData.startTime ? new Date(formData.startTime).toISOString().slice(0, 16) : ''}
-                        className="w-full border-2 rounded-xl px-4 py-3 focus:outline-none transition-all"
-                        style={{ borderColor: '#D2D7E1', color: '#141E32' }}
-                        onFocus={(e) => {
-                          e.target.style.borderColor = '#FF6900';
-                          e.target.style.boxShadow = '0 0 0 3px rgba(255, 105, 0, 0.1)';
-                        }}
-                        onBlur={(e) => {
-                          e.target.style.borderColor = '#D2D7E1';
-                          e.target.style.boxShadow = 'none';
-                        }}
+                        className="w-20 border border-gray-300 rounded px-3 py-2"
                       />
-                      <p className="text-xs mt-2" style={{ color: '#6B7280' }}>
-                        Leave empty to repeat indefinitely (max 1 year)
-                      </p>
+                      <span>
+                        {formData.recurrencePattern === 'DAILY'
+                          ? 'day(s)'
+                          : formData.recurrencePattern === 'WEEKLY'
+                          ? 'week(s)'
+                          : 'month(s)'}
+                      </span>
                     </div>
-                  </>
-                )}
+                  </div>
 
-                {/* Footer Buttons */}
-                <div className="flex gap-3 justify-end pt-4 border-t" style={{ borderColor: '#E9EDF2' }}>
-                  {modalType === 'edit' && (
-                    <button
-                      type="button"
-                      onClick={handleDelete}
-                      className="px-4 py-2 rounded-lg font-medium text-sm transition-all"
-                      style={{ backgroundColor: '#EF4444', color: 'white' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#DC2626'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#EF4444'}
-                    >
-                      Delete
-                    </button>
+                  {formData.recurrencePattern === 'WEEKLY' && (
+                    <div className="mb-4">
+                      <label className="block font-medium mb-2">Days of Week</label>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { value: 0, label: 'Sun' },
+                          { value: 1, label: 'Mon' },
+                          { value: 2, label: 'Tue' },
+                          { value: 3, label: 'Wed' },
+                          { value: 4, label: 'Thu' },
+                          { value: 5, label: 'Fri' },
+                          { value: 6, label: 'Sat' },
+                        ].map((day) => (
+                          <label
+                            key={day.value}
+                            className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-50"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={formData.recurrenceDaysOfWeek.includes(day.value)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData({
+                                    ...formData,
+                                    recurrenceDaysOfWeek: [
+                                      ...formData.recurrenceDaysOfWeek,
+                                      day.value,
+                                    ],
+                                  });
+                                } else {
+                                  setFormData({
+                                    ...formData,
+                                    recurrenceDaysOfWeek: formData.recurrenceDaysOfWeek.filter(
+                                      (d) => d !== day.value
+                                    ),
+                                  });
+                                }
+                              }}
+                              className="w-4 h-4"
+                            />
+                            <span>{day.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                   )}
+
+                  <div className="mb-4">
+                    <label className="block font-medium mb-2">Repeat Until (Optional)</label>
+                    <input
+                      type="datetime-local"
+                      value={formData.recurrenceEndDate}
+                      onChange={(e) =>
+                        setFormData({ ...formData, recurrenceEndDate: e.target.value })
+                      }
+                      min={formData.startTime ? new Date(formData.startTime).toISOString().slice(0, 16) : ''}
+                      className="w-full border border-gray-300 rounded px-3 py-2"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Leave empty to repeat indefinitely (max 1 year)
+                    </p>
+                  </div>
+                </>
+              )}
+
+              <div className="flex gap-2 justify-end">
+                {modalType === 'edit' && (
                   <button
                     type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 rounded-lg font-medium text-sm transition-all border"
-                    style={{ backgroundColor: 'white', color: '#141E32', borderColor: '#D2D7E1' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#E9EDF2';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'white';
-                    }}
+                    onClick={handleDelete}
+                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                   >
-                    Cancel
+                    Delete
                   </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 rounded-lg font-medium text-sm text-white transition-all"
-                    style={{ backgroundColor: '#000032' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#141E32';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#000032';
-                    }}
-                  >
-                    {modalType === 'create' ? 'Create' : 'Update'}
-                  </button>
-                </div>
-              </form>
-            </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-white rounded transition-colors"
+                  style={{ backgroundColor: '#000032' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#141E32'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#000032'}
+                >
+                  {modalType === 'create' ? 'Create' : 'Update'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
