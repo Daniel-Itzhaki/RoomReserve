@@ -34,40 +34,34 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-/* Calendar Styling - Premium Modern Design */
+/* Calendar Styling - Clean Google Calendar Style */
 .rbc-calendar {
   font-family: 'Lato', sans-serif;
   background: transparent;
 }
 
-/* Clean, minimal calendar container */
 .rbc-time-view {
-  border: none !important;
-  border-radius: 20px;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   background: white;
-  border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .rbc-time-header {
-  border-bottom: none !important;
-  background: white;
-  border-radius: 20px 20px 0 0;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 1px solid #e5e7eb !important;
+  background: #f9fafb;
 }
 
 .rbc-header {
-  padding: 20px 16px;
-  font-weight: 700;
-  font-size: 0.9375rem;
+  padding: 12px 8px;
+  font-weight: 600;
+  font-size: 0.8125rem;
   text-transform: capitalize;
-  letter-spacing: -0.01em;
-  background: white !important;
-  color: #141E32;
-  border: none !important;
-  border-right: 1px solid #f1f5f9 !important;
-  font-family: 'Lato', sans-serif;
+  background: #f9fafb !important;
+  color: #374151;
+  border-right: 1px solid #e5e7eb !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
 .rbc-header:last-child {
@@ -75,166 +69,109 @@ body {
 }
 
 .rbc-time-content {
-  border-top: none !important;
-  background: #ffffff;
-  border-radius: 0 0 20px 20px;
+  border-top: 1px solid #e5e7eb !important;
+  background: white;
 }
 
 .rbc-time-slot {
-  border-top: 1px solid #f8fafc !important;
+  border-top: 1px solid #f3f4f6 !important;
 }
 
 .rbc-timeslot-group {
-  min-height: 90px;
-  border-left: 1px solid #f1f5f9 !important;
+  min-height: 60px;
+  border-left: 1px solid #e5e7eb !important;
 }
 
 .rbc-day-slot .rbc-time-slot {
-  border-top: 1px solid #f8fafc;
+  border-top: 1px solid #f3f4f6;
 }
 
 .rbc-label {
-  font-weight: 700;
-  color: #475569;
-  font-size: 0.8125rem;
-  padding: 12px 16px;
-  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.75rem;
+  padding: 8px 12px;
 }
 
 .rbc-current-time-indicator {
   background: #FF6900;
-  height: 3px;
-  box-shadow: 0 0 12px rgba(255, 105, 0, 0.7);
+  height: 2px;
   z-index: 10;
-  border-radius: 2px;
 }
 
 .rbc-current-time-indicator::before {
   content: '';
   position: absolute;
-  left: -6px;
+  left: -4px;
   top: -3px;
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   background: #FF6900;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(255, 105, 0, 0.8);
 }
 
-/* Premium event cards */
+/* Clean event cards */
 .rbc-event {
-  padding: 10px 14px;
+  padding: 6px 10px;
   cursor: pointer;
   font-size: 0.8125rem;
   border: none !important;
-  border-radius: 12px;
-  font-weight: 600;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 8px 10px !important;
-  border-left: 5px solid currentColor !important;
-  backdrop-filter: blur(10px);
-  font-family: 'Lato', sans-serif;
+  border-radius: 4px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  margin: 4px 6px !important;
+  border-left: 3px solid currentColor !important;
 }
 
 .rbc-event:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   z-index: 5;
 }
 
 .rbc-event-label {
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 600;
   opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 2px;
 }
 
 .rbc-event-content {
   font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .rbc-today {
-  background: linear-gradient(to right, rgba(255, 105, 0, 0.03), transparent);
+  background: #fef3f2;
 }
 
-/* Premium toolbar */
+/* Hide default toolbar */
 .rbc-toolbar {
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: none !important;
 }
 
-.rbc-toolbar button {
-  padding: 12px 24px;
-  border: 2px solid #e2e8f0;
-  background: white;
-  border-radius: 14px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #141E32;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  font-family: 'Lato', sans-serif;
-}
-
-.rbc-toolbar button:hover {
-  background: #141E32;
-  color: white;
-  border-color: #141E32;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(20, 30, 50, 0.25);
-}
-
-.rbc-toolbar button.rbc-active {
-  background: #141E32;
-  color: white;
-  border-color: #141E32;
-  box-shadow: 0 6px 16px rgba(20, 30, 50, 0.3);
-}
-
-.rbc-toolbar-label {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #141E32;
-  padding: 12px 0;
-  letter-spacing: -0.02em;
-  font-family: 'Lato', sans-serif;
-}
-
-/* Premium resource headers - room names */
+/* Clean resource headers */
 .rbc-resource-header {
-  background: white !important;
-  border-right: 1px solid #f1f5f9 !important;
-  padding: 20px 16px !important;
-  font-weight: 700;
-  font-size: 0.875rem;
-  color: #141E32;
+  background: #f9fafb !important;
+  border-right: 1px solid #e5e7eb !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 12px 8px !important;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #374151;
   text-align: center;
   position: relative;
-  border-bottom: 2px solid #f1f5f9;
 }
 
 .rbc-resource-cell {
-  border-right: 1px solid #f1f5f9 !important;
+  border-right: 1px solid #e5e7eb !important;
   background: white;
 }
 
 .rbc-time-content > * + * > * {
-  border-left: 1px solid #f1f5f9 !important;
+  border-left: 1px solid #e5e7eb !important;
 }
 
-/* Clean grid */
 .rbc-day-slot {
   background: white;
 }
@@ -243,17 +180,16 @@ body {
   background: white;
 }
 
-/* Premium spacing */
 .rbc-day-slot .rbc-events-container {
-  margin-right: 10px;
+  margin-right: 6px;
 }
 
 .rbc-day-slot .rbc-event {
-  margin: 10px 8px !important;
+  margin: 4px 6px !important;
 }
 
 .rbc-time-slot .rbc-event {
-  margin: 10px 8px !important;
+  margin: 4px 6px !important;
 }
 
 .rbc-addons-dnd .rbc-addons-dnd-resizable {

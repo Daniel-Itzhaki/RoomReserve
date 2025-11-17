@@ -540,28 +540,22 @@ export default function BookingCalendar({
       const bookingEvent = event as BookingEvent;
       const isOwner = bookingEvent.userId === currentUserId;
       const roomColor = roomColorMap.get(bookingEvent.roomId) || ROOM_COLORS[0];
-      // Use primary color for owner, secondary for others
       const backgroundColor = isOwner ? roomColor.primary : roomColor.secondary;
-      const hasGuests = bookingEvent.guestEmails && bookingEvent.guestEmails.length > 0;
 
       return {
         style: {
-          background: isOwner 
-            ? `linear-gradient(135deg, ${roomColor.primary} 0%, ${roomColor.secondary} 100%)`
-            : `linear-gradient(135deg, ${roomColor.secondary} 0%, ${roomColor.primary} 100%)`,
-          borderRadius: '10px',
-          opacity: 0.98,
+          backgroundColor,
+          borderRadius: '4px',
+          opacity: isOwner ? 1 : 0.85,
           color: 'white',
           border: 'none',
-          borderLeft: `4px solid ${isOwner ? roomColor.secondary : roomColor.primary}`,
+          borderLeft: `3px solid ${isOwner ? roomColor.secondary : roomColor.primary}`,
           display: 'block',
           position: 'relative',
-          padding: '6px 8px',
+          padding: '6px 10px',
           fontWeight: isOwner ? '600' : '500',
-          boxShadow: isOwner 
-            ? '0 4px 12px rgba(0, 0, 0, 0.15)' 
-            : '0 2px 8px rgba(0, 0, 0, 0.12)',
-          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.2s',
         },
       };
     },
@@ -582,39 +576,75 @@ export default function BookingCalendar({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex gap-3">
-          <button
-            onClick={() => setView('day')}
-            className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
-              view === 'day'
-                ? 'bg-gradient-to-r from-[#141E32] to-[#000032] text-white shadow-lg shadow-[#141E32]/20'
-                : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-[#141E32] hover:shadow-md'
-            }`}
-            style={{ fontFamily: 'Lato, sans-serif' }}
-          >
-            Day
-          </button>
-          <button
-            onClick={() => setView('week')}
-            className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
-              view === 'week'
-                ? 'bg-gradient-to-r from-[#141E32] to-[#000032] text-white shadow-lg shadow-[#141E32]/20'
-                : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-[#141E32] hover:shadow-md'
-            }`}
-            style={{ fontFamily: 'Lato, sans-serif' }}
-          >
-            Week
-          </button>
+      {/* Custom Toolbar - Clean and Simple */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2 bg-gray-100 rounded-xl p-1">
+            <button
+              onClick={() => setView('day')}
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+                view === 'day'
+                  ? 'bg-white text-[#141E32] shadow-sm'
+                  : 'text-gray-600 hover:text-[#141E32]'
+              }`}
+            >
+              Day
+            </button>
+            <button
+              onClick={() => setView('week')}
+              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
+                view === 'week'
+                  ? 'bg-white text-[#141E32] shadow-sm'
+                  : 'text-gray-600 hover:text-[#141E32]'
+              }`}
+            >
+              Week
+            </button>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSelectedDate(new Date())}
+              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              Today
+            </button>
+            <button
+              onClick={() => {
+                const newDate = new Date(selectedDate);
+                newDate.setDate(newDate.getDate() - 1);
+                setSelectedDate(newDate);
+              }}
+              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => {
+                const newDate = new Date(selectedDate);
+                newDate.setDate(newDate.getDate() + 1);
+                setSelectedDate(newDate);
+              }}
+              className="p-2 text-gray-600 hover:text-[#141E32] hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <div className="px-4 py-2 text-base font-bold text-[#141E32] min-w-[140px]">
+              {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-3 items-center">
-          <label className="font-semibold text-gray-700">Room:</label>
+          <label className="font-semibold text-gray-700 text-sm">Filter:</label>
           <select
             value={selectedRoom}
             onChange={(e) => setSelectedRoom(e.target.value)}
-            className="border-2 border-gray-200 rounded-xl px-4 py-2.5 bg-white font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6900] focus:border-transparent transition-all shadow-sm hover:shadow-md"
-            style={{ fontFamily: 'Lato, sans-serif' }}
+            className="border border-gray-300 rounded-lg px-4 py-2 bg-white font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6900] focus:border-transparent transition-all text-sm"
           >
             <option value="all">All Rooms</option>
             {rooms
@@ -628,7 +658,7 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 border border-gray-100/50">
+      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <style dangerouslySetInnerHTML={{__html: `
           .rbc-time-content {
             border-top: none !important;
@@ -637,28 +667,28 @@ export default function BookingCalendar({
             border-left: none !important;
           }
           .rbc-header {
-            border-bottom: none !important;
-            padding: 20px 16px !important;
-            font-weight: 700 !important;
-            background: white !important;
-            color: #141E32 !important;
-            border-right: 1px solid #f1f5f9 !important;
+            padding: 12px 8px !important;
+            font-weight: 600 !important;
+            background: #f9fafb !important;
+            color: #374151 !important;
+            border-right: 1px solid #e5e7eb !important;
+            border-bottom: 1px solid #e5e7eb !important;
           }
           .rbc-time-slot {
-            border-top: 1px solid #f8fafc !important;
+            border-top: 1px solid #f3f4f6 !important;
           }
           .rbc-day-slot .rbc-time-slot {
-            border-top: 1px solid #f8fafc !important;
+            border-top: 1px solid #f3f4f6 !important;
           }
           .rbc-resource-header {
-            border-right: 1px solid #f1f5f9 !important;
-            padding: 20px 16px !important;
-            font-weight: 700 !important;
-            background: white !important;
+            border-right: 1px solid #e5e7eb !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            padding: 12px 8px !important;
+            font-weight: 600 !important;
+            background: #f9fafb !important;
             text-align: center !important;
             position: relative !important;
-            color: #141E32 !important;
-            border-bottom: 2px solid #f1f5f9 !important;
+            color: #374151 !important;
           }
           .rbc-resource-header::before {
             content: '';
@@ -666,41 +696,38 @@ export default function BookingCalendar({
             left: 0;
             top: 0;
             bottom: 0;
-            width: 4px;
+            width: 3px;
             background-color: var(--room-color);
-            border-radius: 0 4px 4px 0;
           }
           .rbc-resource-cell {
-            border-right: 1px solid #f1f5f9 !important;
+            border-right: 1px solid #e5e7eb !important;
             padding: 4px !important;
             background: white !important;
           }
           .rbc-time-content > * + * > * {
-            border-left: 1px solid #f1f5f9 !important;
+            border-left: 1px solid #e5e7eb !important;
           }
           .rbc-event {
-            margin: 10px 8px !important;
-            border-radius: 12px !important;
-            border-left: 5px solid currentColor !important;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1) !important;
-            padding: 10px 14px !important;
+            margin: 4px 6px !important;
+            border-radius: 4px !important;
+            border-left: 3px solid currentColor !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            padding: 6px 10px !important;
           }
           .rbc-day-slot .rbc-event {
-            margin-top: 10px !important;
-            margin-bottom: 10px !important;
-            margin-left: 8px !important;
-            margin-right: 8px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+            margin-left: 6px !important;
+            margin-right: 6px !important;
           }
           .rbc-time-slot .rbc-event {
-            margin-top: 10px !important;
-            margin-bottom: 10px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
           }
           .rbc-event-label {
             font-size: 0.6875rem !important;
-            opacity: 0.85 !important;
+            opacity: 0.9 !important;
             font-weight: 600 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.5px !important;
           }
           .rbc-event-content {
             font-size: 0.8125rem !important;
@@ -713,13 +740,13 @@ export default function BookingCalendar({
             background: white !important;
           }
           .rbc-day-slot .rbc-events-container {
-            margin-right: 8px !important;
+            margin-right: 6px !important;
           }
           .rbc-day-slot .rbc-event:not(:last-child) {
-            margin-bottom: 12px !important;
+            margin-bottom: 6px !important;
           }
           .rbc-time-slot .rbc-event:not(:last-child) {
-            margin-bottom: 12px !important;
+            margin-bottom: 6px !important;
           }
           .rbc-time-slot {
             background: white !important;
@@ -732,6 +759,7 @@ export default function BookingCalendar({
           endAccessor={(event: any) => event.end}
           resourceIdAccessor={(event: any) => event.resourceId}
           resourceTitleAccessor={(resource: any) => resource.resourceTitle}
+          toolbar={false}
           components={{
             event: ({ event }: any) => {
               const bookingEvent = event as BookingEvent;
@@ -756,27 +784,25 @@ export default function BookingCalendar({
                 <div style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: '10px', 
+                  gap: '8px', 
                   justifyContent: 'center', 
-                  padding: '12px 8px',
+                  padding: '8px 4px',
                   position: 'relative'
                 }}>
                   <div
                     style={{
-                      width: '16px',
-                      height: '16px',
+                      width: '12px',
+                      height: '12px',
                       borderRadius: '50%',
                       backgroundColor: roomColor.primary,
-                      border: `2px solid ${roomColor.secondary}`,
                       flexShrink: 0,
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
                     }}
                   />
                   <span style={{ 
                     fontWeight: 600, 
-                    fontSize: '0.875rem',
-                    color: '#141E32',
-                    letterSpacing: '0.01em'
+                    fontSize: '0.8125rem',
+                    color: '#374151',
+                    fontFamily: 'Lato, sans-serif'
                   }}>{resource.resourceTitle}</span>
                 </div>
               );
