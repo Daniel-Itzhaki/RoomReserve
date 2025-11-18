@@ -213,18 +213,8 @@ export default async function Dashboard() {
                   {userBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="group border-2 rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                      className="group border-2 rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[#FF6900] hover:bg-[#FFF5EB]"
                       style={{ borderColor: '#D2D7E1', backgroundColor: '#ffffff' }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = '#FF6900';
-                        e.currentTarget.style.backgroundColor = '#FFF5EB';
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = '#D2D7E1';
-                        e.currentTarget.style.backgroundColor = '#ffffff';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -299,18 +289,8 @@ export default async function Dashboard() {
                   {todayBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="group border-2 rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                      className="group border-2 rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[#000032] hover:bg-[#F0F4F8]"
                       style={{ borderColor: '#D2D7E1', backgroundColor: '#ffffff' }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = '#000032';
-                        e.currentTarget.style.backgroundColor = '#F0F4F8';
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = '#D2D7E1';
-                        e.currentTarget.style.backgroundColor = '#ffffff';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
