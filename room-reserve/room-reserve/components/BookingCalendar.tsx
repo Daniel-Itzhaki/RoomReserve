@@ -764,21 +764,34 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-xl shadow-lg border-2 p-4" style={{ borderColor: '#D2D7E1' }}>
+      <div className="flex-1 bg-white rounded-lg sm:rounded-xl shadow-lg border-2 p-2 sm:p-3 lg:p-4 overflow-x-auto" style={{ borderColor: '#D2D7E1' }}>
         <style dangerouslySetInnerHTML={{__html: `
+          .rbc-calendar {
+            min-width: 100% !important;
+            overflow-x: auto !important;
+          }
           .rbc-time-content {
             border-top: none !important;
+            overflow-x: auto !important;
           }
           .rbc-time-header-content {
             border-left: none !important;
+            overflow-x: auto !important;
           }
           .rbc-header {
-            padding: 12px 8px !important;
+            padding: 8px 4px !important;
             font-weight: 600 !important;
             background: #f9fafb !important;
             color: #374151 !important;
             border-right: 1px solid #e5e7eb !important;
             border-bottom: 1px solid #e5e7eb !important;
+            font-size: 0.75rem !important;
+          }
+          @media (min-width: 640px) {
+            .rbc-header {
+              padding: 12px 8px !important;
+              font-size: 0.875rem !important;
+            }
           }
           .rbc-time-slot {
             border-top: 1px solid #f3f4f6 !important;
@@ -789,12 +802,21 @@ export default function BookingCalendar({
           .rbc-resource-header {
             border-right: 1px solid #e5e7eb !important;
             border-bottom: 1px solid #e5e7eb !important;
-            padding: 12px 8px !important;
+            padding: 8px 4px !important;
             font-weight: 600 !important;
             background: #f9fafb !important;
             text-align: center !important;
             position: relative !important;
             color: #374151 !important;
+            font-size: 0.75rem !important;
+            min-width: 80px !important;
+          }
+          @media (min-width: 640px) {
+            .rbc-resource-header {
+              padding: 12px 8px !important;
+              font-size: 0.8125rem !important;
+              min-width: 120px !important;
+            }
           }
           .rbc-resource-header::before {
             content: '';
@@ -809,6 +831,12 @@ export default function BookingCalendar({
             border-right: 1px solid #e5e7eb !important;
             padding: 4px !important;
             background: white !important;
+            min-width: 80px !important;
+          }
+          @media (min-width: 640px) {
+            .rbc-resource-cell {
+              min-width: 120px !important;
+            }
           }
           .rbc-time-content > * + * > * {
             border-left: 1px solid #e5e7eb !important;
@@ -818,7 +846,12 @@ export default function BookingCalendar({
             border-radius: 4px !important;
             border-left: 3px solid currentColor !important;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-            padding: 6px 10px !important;
+            padding: 4px 6px !important;
+          }
+          @media (min-width: 640px) {
+            .rbc-event {
+              padding: 6px 10px !important;
+            }
           }
           .rbc-day-slot .rbc-event {
             margin-top: 4px !important;
@@ -831,15 +864,25 @@ export default function BookingCalendar({
             margin-bottom: 4px !important;
           }
           .rbc-event-label {
-            font-size: 0.6875rem !important;
+            font-size: 0.625rem !important;
             opacity: 0.9 !important;
             font-weight: 600 !important;
           }
+          @media (min-width: 640px) {
+            .rbc-event-label {
+              font-size: 0.6875rem !important;
+            }
+          }
           .rbc-event-content {
-            font-size: 0.8125rem !important;
+            font-size: 0.75rem !important;
             padding: 2px 4px !important;
             font-weight: 500 !important;
             line-height: 1.4 !important;
+          }
+          @media (min-width: 640px) {
+            .rbc-event-content {
+              font-size: 0.8125rem !important;
+            }
           }
           .rbc-day-slot {
             position: relative;
@@ -871,11 +914,11 @@ export default function BookingCalendar({
               const bookingEvent = event as BookingEvent;
               const hasGuests = bookingEvent.guestEmails && bookingEvent.guestEmails.length > 0;
               return (
-                <div className="relative w-full h-full flex items-center gap-2 px-2 py-1">
+                <div className="relative w-full h-full flex items-center gap-1 sm:gap-2 px-1 sm:px-2 py-0.5 sm:py-1">
                   <span className="flex-1 truncate text-xs font-semibold leading-tight">{bookingEvent.title}</span>
                   {hasGuests && bookingEvent.guestEmails && (
-                    <div className="flex-shrink-0 flex items-center gap-1 bg-white/30 rounded-full px-1.5 py-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="flex-shrink-0 flex items-center gap-0.5 sm:gap-1 bg-white/30 rounded-full px-1 sm:px-1.5 py-0.5" title={`${bookingEvent.guestEmails.length} guest(s)`}>
+                      <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                       </svg>
                       <span className="text-xs font-bold">{bookingEvent.guestEmails.length}</span>
@@ -890,23 +933,23 @@ export default function BookingCalendar({
                 <div style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: '8px', 
+                  gap: '4px', 
                   justifyContent: 'center', 
-                  padding: '8px 4px',
+                  padding: '4px 2px',
                   position: 'relative'
                 }}>
                   <div
                     style={{
-                      width: '12px',
-                      height: '12px',
+                      width: '8px',
+                      height: '8px',
                       borderRadius: '50%',
                       backgroundColor: roomColor.primary,
                       flexShrink: 0,
                     }}
                   />
-                  <span style={{ 
+                  <span className="truncate" style={{ 
                     fontWeight: 600, 
-                    fontSize: '0.8125rem',
+                    fontSize: '0.75rem',
                     color: '#374151',
                     fontFamily: 'Lato, sans-serif'
                   }}>{resource.resourceTitle}</span>
@@ -930,14 +973,14 @@ export default function BookingCalendar({
           timeslots={2}
           min={min}
           max={max}
-          style={{ height: 600 }}
+          style={{ height: 'calc(100vh - 400px)', minHeight: 400 }}
           views={['day', 'week']}
         />
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden border-2" style={{ borderColor: '#D2D7E1' }}>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[95vh] my-4 overflow-hidden border-2" style={{ borderColor: '#D2D7E1' }}>
             <div className="p-6" style={{ background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}>
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
