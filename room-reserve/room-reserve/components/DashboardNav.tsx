@@ -58,12 +58,16 @@ export default function DashboardNav({ userName, userRole }: DashboardNavProps) 
             {userRole === 'ADMIN' && (
               <Link
                 href="/admin"
-                className="px-5 py-2.5 text-white rounded-xl font-semibold transform transition-all duration-200 hover:scale-105 shadow-lg"
-                style={{ backgroundColor: '#FF6900' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D24B00'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF6900'}
+                className="px-5 py-2.5 text-white rounded-full font-bold transform transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                style={{ background: 'linear-gradient(135deg, #4F9AFF 0%, #2A7AFE 100%)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #3A8AEF 0%, #1A6AEE 100%)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #4F9AFF 0%, #2A7AFE 100%)';
+                }}
               >
-                Admin
+                Admin Panel
               </Link>
             )}
             <LogoutButton />

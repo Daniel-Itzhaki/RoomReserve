@@ -179,13 +179,13 @@ export default function CalendarPage() {
               {session.user.role === 'ADMIN' && (
                 <Link
                   href="/admin"
-                  className="px-4 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #000032 0%, #141E32 100%)' }}
+                  className="px-5 py-2.5 text-white rounded-full font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #4F9AFF 0%, #2A7AFE 100%)' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #141E32 0%, #000032 100%)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #3A8AEF 0%, #1A6AEE 100%)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #000032 0%, #141E32 100%)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #4F9AFF 0%, #2A7AFE 100%)';
                   }}
                 >
                   Admin Panel
