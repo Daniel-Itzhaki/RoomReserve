@@ -17,18 +17,36 @@ export async function PUT(
     const { role, password } = await req.json();
     const { id: userId } = await params;
 
+    console.log('Password update request:', { userId, hasPassword: !!password, passwordLength: password?.length });
+
     const updateData: any = {};
     if (role !== undefined) {
       updateData.role = role;
     }
-    if (password && typeof password === 'string' && password.trim().length > 0) {
-      if (password.length < 6) {
+    if (password && typeof password === 'string') {
+      const trimmedPassword = password.trim();
+      if (trimmedPassword.length === 0) {
+        return NextResponse.json(
+          { error: 'Password cannot be empty' },
+          { status: 400 }
+        );
+      }
+      if (trimmedPassword.length < 6) {
         return NextResponse.json(
           { error: 'Password must be at least 6 characters long' },
           { status: 400 }
         );
       }
-      updateData.password = await bcrypt.hash(password, 10);
+      // Hash the trimmed password to ensure consistency
+      updateData.password = await bcrypt.hash(trimmedPassword, 10);
+      console.log('Password hashed successfully for user:', userId);
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json(
+        { error: 'No fields to update' },
+        { status: 400 }
+      );
     }
 
     const user = await prisma.user.update({
@@ -43,6 +61,7 @@ export async function PUT(
       },
     });
 
+    console.log('User updated successfully:', user.email);
     return NextResponse.json(user);
   } catch (error) {
     console.error('Error updating user:', error);

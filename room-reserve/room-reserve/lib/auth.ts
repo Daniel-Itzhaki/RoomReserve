@@ -32,6 +32,8 @@ export const authOptions: NextAuthOptions = {
 
         // Normalize email to lowercase for case-insensitive lookup
         const normalizedEmail = credentials.email.toLowerCase().trim();
+        // Trim password to match how it's stored (trimmed before hashing)
+        const normalizedPassword = credentials.password.trim();
 
         const user = await prisma.user.findUnique({
           where: {
@@ -44,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
+          normalizedPassword,
           user.password
         );
 
