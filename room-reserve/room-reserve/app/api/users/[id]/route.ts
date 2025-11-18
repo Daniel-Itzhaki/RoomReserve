@@ -21,7 +21,13 @@ export async function PUT(
     if (role !== undefined) {
       updateData.role = role;
     }
-    if (password) {
+    if (password && typeof password === 'string' && password.trim().length > 0) {
+      if (password.length < 6) {
+        return NextResponse.json(
+          { error: 'Password must be at least 6 characters long' },
+          { status: 400 }
+        );
+      }
       updateData.password = await bcrypt.hash(password, 10);
     }
 

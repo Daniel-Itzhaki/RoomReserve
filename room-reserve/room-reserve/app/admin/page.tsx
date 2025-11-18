@@ -358,12 +358,12 @@ export default function AdminPage() {
               <Link
                 href="/calendar"
                 className="px-4 py-2.5 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}
+                style={{ backgroundColor: '#3174ad' }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #003A7A 0%, #0099D1 100%)';
+                  e.currentTarget.style.backgroundColor = '#2a5f8f';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)';
+                  e.currentTarget.style.backgroundColor = '#3174ad';
                 }}
               >
                 Calendar
