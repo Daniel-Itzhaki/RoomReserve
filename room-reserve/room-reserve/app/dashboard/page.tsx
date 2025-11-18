@@ -93,18 +93,18 @@ export default async function Dashboard() {
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="p-4 rounded-2xl shadow-lg" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mb-6 sm:mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4">
+            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-lg flex-shrink-0" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)' }}>
+              <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <div>
-              <h2 className="text-4xl font-bold mb-2" style={{ color: '#141E32' }}>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 break-words" style={{ color: '#141E32' }}>
                 Welcome back, {session.user.name?.split(' ')[0] || 'User'}! 👋
               </h2>
-              <p className="text-lg" style={{ color: '#6B7280' }}>
+              <p className="text-sm sm:text-base lg:text-lg" style={{ color: '#6B7280' }}>
                 Here's an overview of your bookings and today's schedule.
               </p>
             </div>
@@ -112,7 +112,7 @@ export default async function Dashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-10">
           <div className="group relative rounded-2xl shadow-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl" style={{ background: 'linear-gradient(135deg, #004B9B 0%, #00BCFA 100%)', borderColor: '#D2D7E1' }}>
             <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -mr-20 -mt-20 transition-transform duration-500 group-hover:scale-150"></div>
             <div className="relative p-6">
@@ -163,10 +163,10 @@ export default async function Dashboard() {
         </div>
 
         {/* Quick Action */}
-        <div className="mb-10">
+        <div className="mb-6 sm:mb-10">
           <Link
             href="/calendar"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-white transition-all shadow-lg hover:shadow-2xl transform hover:scale-105"
+            className="group inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold text-white transition-all shadow-lg hover:shadow-2xl transform hover:scale-105 w-full sm:w-auto justify-center sm:justify-start"
             style={{ background: 'linear-gradient(135deg, #FF6900 0%, #D24B00 100%)' }}
           >
             <div className="p-1.5 bg-white/20 rounded-lg group-hover:rotate-90 transition-transform duration-300">
@@ -174,7 +174,7 @@ export default async function Dashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            <span className="text-lg">Book a Room</span>
+            <span>Book a Room</span>
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -182,7 +182,7 @@ export default async function Dashboard() {
         </div>
 
         {/* Bookings Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Your Upcoming Bookings */}
           <div className="rounded-2xl shadow-xl border-2 overflow-hidden" style={{ background: 'rgba(255, 255, 255, 0.9)', borderColor: '#D2D7E1' }}>
             <div className="p-6 border-b-2" style={{ background: 'linear-gradient(to right, #E9EDF2, #ffffff)', borderColor: '#D2D7E1' }}>
