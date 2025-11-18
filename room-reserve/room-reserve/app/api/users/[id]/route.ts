@@ -1,4 +1,5 @@
 // User management API - handles password resets and user updates
+// Last updated: 2025-01-18
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
