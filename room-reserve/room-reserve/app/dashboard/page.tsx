@@ -63,15 +63,21 @@ async function getDashboardData(userId: string) {
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (!session || !session.user) {
     redirect('/auth/signin');
   }
 
-  const { userBookings, todayBookings, rooms } = await getDashboardData(
-    session.user.id
-  );
+  if (!session.user.id) {
+    console.error('Session missing user ID:', session);
+    redirect('/auth/signin');
+  }
 
-  function formatDateTime(date: Date) {
+  try {
+    const { userBookings, todayBookings, rooms } = await getDashboardData(
+      session.user.id
+    );
+
+    function formatDateTime(date: Date) {
     const zonedDate = toZonedTime(date, TIMEZONE);
     return format(zonedDate, 'PPP HH:mm');
   }
@@ -350,4 +356,17 @@ export default async function Dashboard() {
       </main>
     </div>
   );
+  } catch (error) {
+    console.error('Error loading dashboard:', error);
+    // Return error page or redirect
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4" style={{ color: '#141E32' }}>Error Loading Dashboard</h1>
+          <p className="text-gray-600 mb-4">An error occurred while loading your dashboard.</p>
+          <a href="/auth/signin" className="text-blue-600 hover:underline">Return to Sign In</a>
+        </div>
+      </div>
+    );
+  }
 }
