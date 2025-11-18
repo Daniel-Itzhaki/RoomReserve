@@ -576,14 +576,14 @@ export default function BookingCalendar({
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-x-hidden">
       {/* Custom Toolbar - Enhanced Design */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2 rounded-xl p-1 shadow-sm" style={{ backgroundColor: '#E9EDF2' }}>
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="flex gap-1 sm:gap-2 rounded-lg sm:rounded-xl p-1 shadow-sm" style={{ backgroundColor: '#E9EDF2' }}>
             <button
               onClick={() => setView('day')}
-              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm transition-all duration-200 ${
                 view === 'day'
                   ? 'text-white shadow-md'
                   : 'text-gray-600 hover:text-[#141E32]'
@@ -604,7 +604,7 @@ export default function BookingCalendar({
             </button>
             <button
               onClick={() => setView('week')}
-              className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm transition-all duration-200 ${
                 view === 'week'
                   ? 'text-white shadow-md'
                   : 'text-gray-600 hover:text-[#141E32]'
@@ -625,10 +625,10 @@ export default function BookingCalendar({
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <button
               onClick={() => setSelectedDate(new Date())}
-              className="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              className="px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap"
               style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#D2D7E1';
@@ -645,7 +645,7 @@ export default function BookingCalendar({
                 newDate.setDate(newDate.getDate() - 1);
                 setSelectedDate(newDate);
               }}
-              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              className="p-1.5 sm:p-2 rounded-md sm:rounded-lg transition-all duration-200 hover:shadow-sm flex-shrink-0"
               style={{ color: '#6B7280' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#004B9B';
@@ -656,7 +656,7 @@ export default function BookingCalendar({
                 e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
@@ -666,7 +666,7 @@ export default function BookingCalendar({
                 newDate.setDate(newDate.getDate() + 1);
                 setSelectedDate(newDate);
               }}
-              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              className="p-1.5 sm:p-2 rounded-md sm:rounded-lg transition-all duration-200 hover:shadow-sm flex-shrink-0"
               style={{ color: '#6B7280' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#004B9B';
@@ -677,11 +677,11 @@ export default function BookingCalendar({
                 e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none min-w-0">
               <input
                 id="date-picker"
                 type="date"
@@ -695,8 +695,9 @@ export default function BookingCalendar({
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 style={{ zIndex: 10 }}
               />
-              <div className="px-4 py-2 text-base font-bold min-w-[140px] rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md pointer-events-none" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}>
-                {format(selectedDate, 'EEEE MMM d', { locale: enUS })}
+              <div className="px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 text-xs sm:text-sm lg:text-base font-bold min-w-[100px] sm:min-w-[120px] lg:min-w-[140px] rounded-md sm:rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md pointer-events-none truncate" style={{ color: '#141E32', backgroundColor: '#E9EDF2' }}>
+                <span className="hidden sm:inline">{format(selectedDate, 'EEEE MMM d', { locale: enUS })}</span>
+                <span className="sm:hidden">{format(selectedDate, 'MMM d', { locale: enUS })}</span>
               </div>
             </div>
             <button
@@ -712,7 +713,7 @@ export default function BookingCalendar({
                   }
                 }
               }}
-              className="p-2 rounded-lg transition-all duration-200 hover:shadow-sm"
+              className="p-1.5 sm:p-2 rounded-md sm:rounded-lg transition-all duration-200 hover:shadow-sm flex-shrink-0"
               style={{ color: '#6B7280' }}
               title="Pick a date"
               onMouseEnter={(e) => {
@@ -724,19 +725,19 @@ export default function BookingCalendar({
                 e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </button>
           </div>
         </div>
 
-        <div className="flex gap-3 items-center">
-          <label className="font-semibold text-sm" style={{ color: '#141E32' }}>Filter:</label>
+        <div className="flex gap-2 sm:gap-3 items-center w-full sm:w-auto">
+          <label className="font-semibold text-xs sm:text-sm whitespace-nowrap" style={{ color: '#141E32' }}>Filter:</label>
           <select
             value={selectedRoom}
             onChange={(e) => setSelectedRoom(e.target.value)}
-            className="rounded-lg px-4 py-2 font-semibold text-sm transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0"
+            className="flex-1 sm:flex-none rounded-md sm:rounded-lg px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 font-semibold text-xs sm:text-sm transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 min-w-0"
             style={{ 
               border: '2px solid #D2D7E1', 
               backgroundColor: 'white',
