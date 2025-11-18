@@ -61,37 +61,37 @@ async function getDashboardData(userId: string) {
 }
 
 export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user) {
-    redirect('/auth/signin');
-  }
-
-  if (!session.user.id) {
-    console.error('Session missing user ID:', session);
-    redirect('/auth/signin');
-  }
-
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user) {
+      redirect('/auth/signin');
+    }
+
+    if (!session.user.id) {
+      console.error('Session missing user ID:', session);
+      redirect('/auth/signin');
+    }
+
     const { userBookings, todayBookings, rooms } = await getDashboardData(
       session.user.id
     );
 
     function formatDateTime(date: Date) {
-    const zonedDate = toZonedTime(date, TIMEZONE);
-    return format(zonedDate, 'PPP HH:mm');
-  }
+      const zonedDate = toZonedTime(date, TIMEZONE);
+      return format(zonedDate, 'PPP HH:mm');
+    }
 
-  function formatTime(date: Date) {
-    const zonedDate = toZonedTime(date, TIMEZONE);
-    return format(zonedDate, 'HH:mm');
-  }
+    function formatTime(date: Date) {
+      const zonedDate = toZonedTime(date, TIMEZONE);
+      return format(zonedDate, 'HH:mm');
+    }
 
-  return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
-      <DashboardNav userName={session.user.name || session.user.email || 'User'} userRole={session.user.role || 'USER'} />
+    return (
+      <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
+        <DashboardNav userName={session.user.name || session.user.email || 'User'} userRole={(session.user.role as 'USER' | 'ADMIN') || 'USER'} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Header */}
         <div className="mb-10">
           <div className="flex items-center gap-4 mb-4">
@@ -353,9 +353,9 @@ export default async function Dashboard() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
-  );
+        </main>
+      </div>
+    );
   } catch (error) {
     console.error('Error loading dashboard:', error);
     // Return error page or redirect
