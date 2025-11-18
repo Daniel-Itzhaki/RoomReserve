@@ -10,113 +10,86 @@ import Link from 'next/link';
 const TIMEZONE = 'Asia/Jerusalem';
 
 async function getDashboardData(userId: string) {
-  try {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const userBookings = await prisma.booking.findMany({
-      where: {
-        userId,
-        endTime: {
-          gte: now,
+  const userBookings = await prisma.booking.findMany({
+    where: {
+      userId,
+      endTime: {
+        gte: now,
+      },
+    },
+    include: {
+      room: true,
+    },
+    orderBy: {
+      startTime: 'asc',
+    },
+    take: 5,
+  });
+
+  const todayBookings = await prisma.booking.findMany({
+    where: {
+      startTime: {
+        gte: today,
+        lt: tomorrow,
+      },
+    },
+    include: {
+      room: true,
+      user: {
+        select: {
+          name: true,
         },
       },
-      include: {
-        room: true,
-      },
-      orderBy: {
-        startTime: 'asc',
-      },
-      take: 5,
-    });
+    },
+    orderBy: {
+      startTime: 'asc',
+    },
+  });
 
-    const todayBookings = await prisma.booking.findMany({
-      where: {
-        startTime: {
-          gte: today,
-          lt: tomorrow,
-        },
-      },
-      include: {
-        room: true,
-        user: {
-          select: {
-            name: true,
-          },
-        },
-      },
-      orderBy: {
-        startTime: 'asc',
-      },
-    });
+  const rooms = await prisma.room.findMany({
+    where: {
+      isActive: true,
+    },
+  });
 
-    const rooms = await prisma.room.findMany({
-      where: {
-        isActive: true,
-      },
-    });
-
-    return { userBookings, todayBookings, rooms };
-  } catch (error) {
-    console.error('Error in getDashboardData:', error);
-    // Return empty arrays on error to prevent page crash
-    return { userBookings: [], todayBookings: [], rooms: [] };
-  }
+  return { userBookings, todayBookings, rooms };
 }
 
 export default async function Dashboard() {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    redirect('/auth/signin');
+  }
+
+  if (!session.user.id) {
+    console.error('Session missing user ID:', session);
+    redirect('/auth/signin');
+  }
+
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session || !session.user) {
-      redirect('/auth/signin');
-    }
-
-    if (!session.user.id) {
-      console.error('Session missing user ID:', session);
-      redirect('/auth/signin');
-    }
-
-    // Ensure role has a default value
-    const userRole = (session.user.role as 'USER' | 'ADMIN') || 'USER';
-
     const { userBookings, todayBookings, rooms } = await getDashboardData(
       session.user.id
     );
 
-    function formatDateTime(date: Date | string) {
-    try {
-      const dateObj = typeof date === 'string' ? new Date(date) : date;
-      if (isNaN(dateObj.getTime())) {
-        return 'Invalid date';
-      }
-      const zonedDate = toZonedTime(dateObj, TIMEZONE);
-      return format(zonedDate, 'PPP HH:mm');
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return 'Invalid date';
-    }
+    function formatDateTime(date: Date) {
+    const zonedDate = toZonedTime(date, TIMEZONE);
+    return format(zonedDate, 'PPP HH:mm');
   }
 
-  function formatTime(date: Date | string) {
-    try {
-      const dateObj = typeof date === 'string' ? new Date(date) : date;
-      if (isNaN(dateObj.getTime())) {
-        return 'Invalid time';
-      }
-      const zonedDate = toZonedTime(dateObj, TIMEZONE);
-      return format(zonedDate, 'HH:mm');
-    } catch (error) {
-      console.error('Error formatting time:', error);
-      return 'Invalid time';
-    }
+  function formatTime(date: Date) {
+    const zonedDate = toZonedTime(date, TIMEZONE);
+    return format(zonedDate, 'HH:mm');
   }
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
-      <DashboardNav userName={session.user.name || session.user.email || 'User'} userRole={userRole} />
+      <DashboardNav userName={session.user.name || session.user.email || 'User'} userRole={session.user.role || 'USER'} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Header */}
@@ -383,20 +356,14 @@ export default async function Dashboard() {
       </main>
     </div>
   );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error loading dashboard:', error);
-    console.error('Error details:', {
-      message: error?.message,
-      stack: error?.stack,
-      name: error?.name,
-    });
     // Return error page or redirect
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, #E9EDF2, #ffffff)' }}>
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4" style={{ color: '#141E32' }}>Error Loading Dashboard</h1>
           <p className="text-gray-600 mb-4">An error occurred while loading your dashboard.</p>
-          <p className="text-sm text-gray-500 mb-4">{process.env.NODE_ENV === 'development' ? error?.message : ''}</p>
           <a href="/auth/signin" className="text-blue-600 hover:underline">Return to Sign In</a>
         </div>
       </div>
