@@ -16,9 +16,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bookings  Booking[]
-  accounts  Account[]
-  sessions  Session[]
+  bookings Booking[]
+  accounts Account[]
+  sessions Session[]
 }
 
 enum Role {
@@ -48,16 +48,16 @@ model Booking {
   startTime   DateTime
   endTime     DateTime
   guestEmails String[] @default([])
-  
+
   // Recurrence fields
-  isRecurring      Boolean   @default(false)
-  recurrencePattern String?  // DAILY, WEEKLY, MONTHLY
-  recurrenceInterval Int?   @default(1) // Every N days/weeks/months
-  recurrenceEndDate DateTime? // When recurrence ends
-  recurrenceDaysOfWeek Int[] @default([]) // For weekly: [1,3,5] = Mon, Wed, Fri (0=Sunday)
-  parentBookingId String? // For recurring series
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isRecurring          Boolean   @default(false)
+  recurrencePattern    String? // DAILY, WEEKLY, MONTHLY
+  recurrenceInterval   Int?      @default(1) // Every N days/weeks/months
+  recurrenceEndDate    DateTime? // When recurrence ends
+  recurrenceDaysOfWeek Int[]     @default([]) // For weekly: [1,3,5] = Mon, Wed, Fri (0=Sunday)
+  parentBookingId      String? // For recurring series
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
   roomId String
